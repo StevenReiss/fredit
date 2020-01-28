@@ -1,0 +1,498 @@
+FREDIT: Reflection result: <RESULT>
+  <REFLECT CALL='sun.util.locale.provider.LocaleProviderAdapter.forType' CALLID='969554861' METHOD='java.lang.Class.newInstance' RETURN='java.lang.Object'>
+    <POINT KIND='BINARY' LINE='176' LOC='17' OPCODE='182'>17: INVOKEVIRTUAL java/lang/Class.newInstance()Ljava/lang/Object; (line 176)</POINT>
+    <SPECIAL INLINE='NORMAL' MUTABLE='true' RESULTTYPE='java.lang.Object' />
+  </REFLECT>
+  <REFLECT CALL='sun.util.locale.provider.LocaleProviderAdapter.forType' CALLID='1807438199' METHOD='java.lang.Class.newInstance' RETURN='java.lang.Object'>
+    <POINT KIND='BINARY' LINE='176' LOC='17' OPCODE='182'>17: INVOKEVIRTUAL java/lang/Class.newInstance()Ljava/lang/Object; (line 176)</POINT>
+    <SPECIAL INLINE='NORMAL' MUTABLE='true' RESULTTYPE='java.lang.Object' />
+  </REFLECT>
+  <REFLECT CALL='sun.util.locale.provider.LocaleProviderAdapter.forType' CALLID='1475633608' METHOD='java.lang.Class.newInstance' RETURN='java.lang.Object'>
+    <POINT KIND='BINARY' LINE='176' LOC='17' OPCODE='182'>17: INVOKEVIRTUAL java/lang/Class.newInstance()Ljava/lang/Object; (line 176)</POINT>
+    <SPECIAL INLINE='NORMAL' MUTABLE='true' RESULTTYPE='java.lang.Object' />
+  </REFLECT>
+  <REFLECT CALL='sun.util.locale.provider.LocaleProviderAdapter.forType' CALLID='1475633608' METHOD='java.lang.Class.newInstance' RETURN='java.lang.Object'>
+    <POINT KIND='BINARY' LINE='176' LOC='17' OPCODE='182'>17: INVOKEVIRTUAL java/lang/Class.newInstance()Ljava/lang/Object; (line 176)</POINT>
+    <SPECIAL INLINE='NORMAL' MUTABLE='true' RESULTTYPE='java.lang.Object' />
+  </REFLECT>
+  <REFLECT CALL='sun.util.locale.provider.LocaleProviderAdapter.forType' CALLID='1807438199' METHOD='java.lang.Class.newInstance' RETURN='java.lang.Object'>
+    <POINT KIND='BINARY' LINE='176' LOC='17' OPCODE='182'>17: INVOKEVIRTUAL java/lang/Class.newInstance()Ljava/lang/Object; (line 176)</POINT>
+    <SPECIAL INLINE='NORMAL' MUTABLE='true' RESULTTYPE='java.lang.Object' />
+  </REFLECT>
+  <REFLECT CALL='sun.util.locale.provider.LocaleProviderAdapter.forType' CALLID='1475633608' METHOD='java.lang.Class.newInstance' RETURN='java.lang.Object'>
+    <POINT KIND='BINARY' LINE='176' LOC='17' OPCODE='182'>17: INVOKEVIRTUAL java/lang/Class.newInstance()Ljava/lang/Object; (line 176)</POINT>
+    <SPECIAL INLINE='NORMAL' MUTABLE='true' RESULTTYPE='java.lang.Object' />
+  </REFLECT>
+  <REPLACE CALL='java.net.InetAddress.&lt;clinit&gt;' CALLID='848776927' METHOD='java.net.InetAddressImplFactory.create' RETURN='java.net.InetAddressImpl'>
+    <POINT KIND='BINARY' LINE='1128' LOC='55' OPCODE='184'>55: INVOKESTATIC java/net/InetAddressImplFactory.create()Ljava/net/InetAddressImpl; (line 1128)</POINT>
+    <SPECIAL INLINE='NORMAL' RESULTTYPE='java.net.Inet4AddressImpl' />
+  </REPLACE>
+</RESULT>
+FREDIT: Performance result: <RESULT>
+  <PERFORMANCE>
+    <TOTALS BACKWARD='14704' FORWARD='159119' SCANS='8901' />
+    <METHOD DESCRIPTION='(Ljava/lang/Throwable;)Lfi/iki/elonen/NanoHTTPD$Response;' FILE='/gpfs/main/home/spr/Eclipse/javasecurity/WebServer/bin/edu/brown/cs/securitylab/SecurityRequest.class' NAME='edu.brown.cs.securitylab.SecurityRequest.renderError'>
+      <TOTAL BACKWARD='0' FORWARD='6' SCANS='0' />
+    </METHOD>
+    <METHOD DESCRIPTION='(Ljava/lang/String;Ljava/lang/String;Z)V' FILE='/gpfs/main/research/java/linux/jdk-10.0.2/jmods/java.base.jmod' NAME='java.util.StringTokenizer.&lt;init&gt;'>
+      <TOTAL BACKWARD='0' FORWARD='2597' SCANS='25' />
+    </METHOD>
+    <METHOD DESCRIPTION='(Ljava/lang/String;)V' FILE='/gpfs/main/research/java/linux/jdk-10.0.2/jmods/java.base.jmod' NAME='java.lang.RuntimeException.&lt;init&gt;'>
+      <TOTAL BACKWARD='0' FORWARD='206' SCANS='18' />
+    </METHOD>
+    <METHOD DESCRIPTION='(Ljava/lang/String;)Lfi/iki/elonen/NanoHTTPD$Response;' FILE='/gpfs/main/home/spr/Eclipse/javasecurity/WebServer/bin/edu/brown/cs/securitylab/SecurityRequest.class' NAME='edu.brown.cs.securitylab.SecurityRequest.renderFile'>
+      <TOTAL BACKWARD='3' FORWARD='90' SCANS='3' />
+    </METHOD>
+    <METHOD DESCRIPTION='(Ljava/io/OutputStream;J)V' FILE='/research/people/spr/javasecurity/lib/nanohttpd.jar' NAME='fi.iki.elonen.NanoHTTPD$Response.sendBody'>
+      <TOTAL BACKWARD='163' FORWARD='1032' SCANS='30' />
+      <BASE BACKWARD='163' FORWARD='1032' SCANS='30' />
+    </METHOD>
+    <METHOD DESCRIPTION='(Ledu/brown/cs/securitylab/SecurityRequest;)Lfi/iki/elonen/NanoHTTPD$Response;' FILE='/gpfs/main/home/spr/Eclipse/javasecurity/WebServer/bin/edu/brown/cs/securitylab/SecurityContributions.class' NAME='edu.brown.cs.securitylab.SecurityContributions.displayContributions'>
+      <TOTAL BACKWARD='33' FORWARD='314' SCANS='0' />
+    </METHOD>
+    <METHOD DESCRIPTION='(Ljava/lang/String;)V' FILE='/gpfs/main/research/java/linux/jdk-10.0.2/jmods/java.base.jmod' NAME='java.lang.NumberFormatException.&lt;init&gt;'>
+      <TOTAL BACKWARD='0' FORWARD='49' SCANS='2' />
+    </METHOD>
+    <METHOD DESCRIPTION='()Ljava/nio/ByteBuffer;' FILE='/gpfs/main/research/java/linux/jdk-10.0.2/jmods/java.base.jmod' NAME='java.nio.HeapByteBuffer.duplicate'>
+      <TOTAL BACKWARD='0' FORWARD='200' SCANS='0' />
+    </METHOD>
+    <METHOD DESCRIPTION='(I)Ljava/lang/IllegalArgumentException;' FILE='/gpfs/main/research/java/linux/jdk-10.0.2/jmods/java.base.jmod' NAME='java.nio.Buffer.createLimitException'>
+      <TOTAL BACKWARD='0' FORWARD='185' SCANS='10' />
+    </METHOD>
+    <METHOD DESCRIPTION='(Ljava/lang/String;)V' FILE='/gpfs/main/research/java/linux/jdk-10.0.2/jmods/java.base.jmod' NAME='java.lang.IllegalArgumentException.&lt;init&gt;'>
+      <TOTAL BACKWARD='0' FORWARD='194' SCANS='17' />
+    </METHOD>
+    <METHOD DESCRIPTION='()V' FILE='/gpfs/main/research/java/linux/jdk-10.0.2/jmods/java.base.jmod' NAME='java.lang.ref.Reference.&lt;clinit&gt;'>
+      <TOTAL BACKWARD='1' FORWARD='8' SCANS='0' />
+    </METHOD>
+    <METHOD DESCRIPTION='(Ljava/lang/Runnable;)V' FILE='/gpfs/main/research/java/linux/jdk-10.0.2/jmods/java.base.jmod' NAME='java.lang.Thread.&lt;init&gt;'>
+      <TOTAL BACKWARD='77' FORWARD='899' SCANS='17' />
+    </METHOD>
+    <METHOD DESCRIPTION='()Ljava/nio/ByteBuffer;' FILE='/gpfs/main/research/java/linux/jdk-10.0.2/jmods/java.base.jmod' NAME='java.nio.HeapByteBuffer.slice'>
+      <TOTAL BACKWARD='0' FORWARD='200' SCANS='0' />
+    </METHOD>
+    <METHOD DESCRIPTION='(IIII)V' FILE='/gpfs/main/research/java/linux/jdk-10.0.2/jmods/java.base.jmod' NAME='java.nio.Buffer.&lt;init&gt;'>
+      <TOTAL BACKWARD='0' FORWARD='980' SCANS='27' />
+    </METHOD>
+    <METHOD DESCRIPTION='(Ledu/brown/cs/securitylab/SecurityRequest;)Lfi/iki/elonen/NanoHTTPD$Response;' FILE='/gpfs/main/home/spr/Eclipse/javasecurity/WebServer/bin/edu/brown/cs/securitylab/SecurityMemos.class' NAME='edu.brown.cs.securitylab.SecurityMemos.displayMemos'>
+      <TOTAL BACKWARD='46' FORWARD='485' SCANS='5' />
+    </METHOD>
+    <METHOD DESCRIPTION='([B)Ljava/nio/ByteBuffer;' FILE='/gpfs/main/research/java/linux/jdk-10.0.2/jmods/java.base.jmod' NAME='java.nio.ByteBuffer.get'>
+      <TOTAL BACKWARD='0' FORWARD='54' SCANS='0' />
+    </METHOD>
+    <METHOD DESCRIPTION='()V' FILE='/gpfs/main/home/spr/Eclipse/javasecurity/WebServer/bin/edu/brown/cs/securitylab/SecurityWebServer.class' NAME='edu.brown.cs.securitylab.SecurityWebServer.start'>
+      <TOTAL BACKWARD='263' FORWARD='4963' SCANS='28' />
+    </METHOD>
+    <METHOD DESCRIPTION='(Ljava/nio/ByteBuffer;IILjava/lang/String;)Ljava/lang/String;' FILE='/research/people/spr/javasecurity/lib/nanohttpd.jar' NAME='fi.iki.elonen.NanoHTTPD$HTTPSession.saveTmpFile'>
+      <TOTAL BACKWARD='0' FORWARD='626' SCANS='0' />
+    </METHOD>
+    <METHOD DESCRIPTION='(Ljava/lang/String;Ljava/util/Map;)Ljava/lang/String;' FILE='/pro/ivy/lib/ivy.jar' NAME='edu.brown.cs.ivy.file.IvyFile.expandName'>
+      <TOTAL BACKWARD='0' FORWARD='844' SCANS='2' />
+      <BASE BACKWARD='0' FORWARD='844' SCANS='2' />
+    </METHOD>
+    <METHOD DESCRIPTION='(Ljava/util/TimeZone;Ljava/util/Locale;)Ljava/util/Calendar;' FILE='/gpfs/main/research/java/linux/jdk-10.0.2/jmods/java.base.jmod' NAME='java.util.Calendar.createCalendar'>
+      <TOTAL BACKWARD='188' FORWARD='4098' SCANS='67' />
+      <BASE BACKWARD='140' FORWARD='2854' SCANS='34' />
+    </METHOD>
+    <METHOD DESCRIPTION='(Ljava/lang/String;)Ljava/lang/String;' FILE='/pro/ivy/lib/ivy.jar' NAME='edu.brown.cs.ivy.file.IvyFile.expandName'>
+      <TOTAL BACKWARD='0' FORWARD='844' SCANS='2' />
+    </METHOD>
+    <METHOD DESCRIPTION='(Ljava/lang/Object;)V' FILE='/gpfs/main/research/java/linux/jdk-10.0.2/jmods/java.base.jmod' NAME='java.lang.AssertionError.&lt;init&gt;'>
+      <TOTAL BACKWARD='0' FORWARD='397' SCANS='36' />
+    </METHOD>
+    <METHOD DESCRIPTION='(Ljava/lang/ThreadLocal$ThreadLocalMap;)Ljava/lang/ThreadLocal$ThreadLocalMap;' FILE='/gpfs/main/research/java/linux/jdk-10.0.2/jmods/java.base.jmod' NAME='java.lang.ThreadLocal.createInheritedMap'>
+      <TOTAL BACKWARD='79' FORWARD='907' SCANS='18' />
+    </METHOD>
+    <METHOD DESCRIPTION='(Ljava/lang/String;Ljava/util/Map;)V' FILE='/research/people/spr/javasecurity/lib/nanohttpd.jar' NAME='fi.iki.elonen.NanoHTTPD$HTTPSession.decodeParms'>
+      <TOTAL BACKWARD='0' FORWARD='569' SCANS='3' />
+    </METHOD>
+    <METHOD DESCRIPTION='()V' FILE='/pro/ivy/lib/ivy.jar' NAME='edu.brown.cs.ivy.exec.IvySetup.setup'>
+      <TOTAL BACKWARD='0' FORWARD='590' SCANS='0' />
+    </METHOD>
+    <METHOD DESCRIPTION='(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;' FILE='/gpfs/main/research/java/linux/jdk-10.0.2/jmods/java.base.jmod' NAME='java.lang.System.setProperty'>
+      <TOTAL BACKWARD='0' FORWARD='4' SCANS='0' />
+    </METHOD>
+    <METHOD DESCRIPTION='(Ljava/lang/String;)V' FILE='/pro/ivy/lib/ivy.jar' NAME='edu.brown.cs.ivy.file.IvyDatabase.setup'>
+      <TOTAL BACKWARD='0' FORWARD='324' SCANS='0' />
+    </METHOD>
+    <METHOD DESCRIPTION='()V' FILE='/gpfs/main/research/java/linux/jdk-10.0.2/jmods/java.base.jmod' NAME='java.lang.Integer.&lt;clinit&gt;'>
+      <TOTAL BACKWARD='0' FORWARD='1000' SCANS='1' />
+      <BASE BACKWARD='0' FORWARD='1000' SCANS='1' />
+    </METHOD>
+    <METHOD DESCRIPTION='(Ljava/io/OutputStream;J)V' FILE='/research/people/spr/javasecurity/lib/nanohttpd.jar' NAME='fi.iki.elonen.NanoHTTPD$Response.sendBodyWithCorrectEncoding'>
+      <TOTAL BACKWARD='162' FORWARD='1032' SCANS='30' />
+    </METHOD>
+    <METHOD DESCRIPTION='(Ledu/brown/cs/securitylab/SecurityRequest;)Lfi/iki/elonen/NanoHTTPD$Response;' FILE='/gpfs/main/home/spr/Eclipse/javasecurity/WebServer/bin/edu/brown/cs/securitylab/SecurityContributions.class' NAME='edu.brown.cs.securitylab.SecurityContributions.handleContributionsUpdate'>
+      <TOTAL BACKWARD='79' FORWARD='846' SCANS='5' />
+    </METHOD>
+    <METHOD DESCRIPTION='(Ledu/brown/cs/securitylab/SecurityRequest;)Lfi/iki/elonen/NanoHTTPD$Response;' FILE='/gpfs/main/home/spr/Eclipse/javasecurity/WebServer/bin/edu/brown/cs/securitylab/SecurityAccount.class' NAME='edu.brown.cs.securitylab.SecurityAccount.handleSignup'>
+      <TOTAL BACKWARD='559' FORWARD='9107' SCANS='114' />
+      <BASE BACKWARD='85' FORWARD='3227' SCANS='57' />
+    </METHOD>
+    <METHOD DESCRIPTION='([BII)Ljava/nio/ByteBuffer;' FILE='/gpfs/main/research/java/linux/jdk-10.0.2/jmods/java.base.jmod' NAME='java.nio.HeapByteBuffer.get'>
+      <TOTAL BACKWARD='0' FORWARD='54' SCANS='0' />
+    </METHOD>
+    <METHOD DESCRIPTION='(Ledu/brown/cs/securitylab/SecurityWebServer;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/util/Map;Lfi/iki/elonen/NanoHTTPD$CookieHandler;)Lfi/iki/elonen/NanoHTTPD$Response;' FILE='/gpfs/main/home/spr/Eclipse/javasecurity/WebServer/bin/edu/brown/cs/securitylab/SecurityWebServer.class' NAME='edu.brown.cs.securitylab.SecurityWebServer.access$1'>
+      <TOTAL BACKWARD='1818' FORWARD='19820' SCANS='213' />
+    </METHOD>
+    <METHOD DESCRIPTION='([BII)V' FILE='/gpfs/main/research/java/linux/jdk-10.0.2/jmods/java.base.jmod' NAME='java.nio.HeapByteBuffer.&lt;init&gt;'>
+      <TOTAL BACKWARD='0' FORWARD='446' SCANS='3' />
+    </METHOD>
+    <METHOD DESCRIPTION='(Ljava/lang/Class;)Ljava/util/spi/LocaleServiceProvider;' FILE='/gpfs/main/research/java/linux/jdk-10.0.2/jmods/java.base.jmod' NAME='sun.util.locale.provider.JRELocaleProviderAdapter.getLocaleServiceProvider'>
+      <TOTAL BACKWARD='0' FORWARD='198' SCANS='12' />
+    </METHOD>
+    <METHOD DESCRIPTION='()V' FILE='/gpfs/main/research/java/linux/jdk-10.0.2/jmods/java.base.jmod' NAME='java.lang.ref.Reference$ReferenceHandler.&lt;clinit&gt;'>
+      <TOTAL BACKWARD='0' FORWARD='17' SCANS='1' />
+    </METHOD>
+    <METHOD DESCRIPTION='(I)Ljava/nio/ByteBuffer;' FILE='/gpfs/main/research/java/linux/jdk-10.0.2/jmods/java.base.jmod' NAME='java.nio.ByteBuffer.limit'>
+      <TOTAL BACKWARD='0' FORWARD='39' SCANS='0' />
+    </METHOD>
+    <METHOD DESCRIPTION='(Ljava/lang/ThreadGroup;Ljava/lang/String;)V' FILE='/gpfs/main/research/java/linux/jdk-10.0.2/jmods/java.base.jmod' NAME='java.lang.ref.Reference$ReferenceHandler.&lt;init&gt;'>
+      <TOTAL BACKWARD='1' FORWARD='8' SCANS='0' />
+    </METHOD>
+    <METHOD DESCRIPTION='(I)I' FILE='/gpfs/main/research/java/linux/jdk-10.0.2/jmods/java.base.jmod' NAME='java.util.StringTokenizer.skipDelimiters'>
+      <TOTAL BACKWARD='4' FORWARD='963' SCANS='20' />
+      <BASE BACKWARD='4' FORWARD='963' SCANS='20' />
+    </METHOD>
+    <METHOD DESCRIPTION='(Ljava/io/OutputStream;J)V' FILE='/research/people/spr/javasecurity/lib/nanohttpd.jar' NAME='fi.iki.elonen.NanoHTTPD$Response.sendBodyWithCorrectTransferAndEncoding'>
+      <TOTAL BACKWARD='172' FORWARD='1036' SCANS='32' />
+    </METHOD>
+    <METHOD DESCRIPTION='(Ledu/brown/cs/securitylab/SecurityRequest;)V' FILE='/gpfs/main/home/spr/Eclipse/javasecurity/WebServer/bin/edu/brown/cs/securitylab/SecurityAccount.class' NAME='edu.brown.cs.securitylab.SecurityAccount.validateLogin'>
+      <TOTAL BACKWARD='0' FORWARD='32' SCANS='1' />
+    </METHOD>
+    <METHOD DESCRIPTION='(Ljava/io/PrintWriter;Ljava/util/Map;J)J' FILE='/research/people/spr/javasecurity/lib/nanohttpd.jar' NAME='fi.iki.elonen.NanoHTTPD$Response.sendContentLengthHeaderIfNotAlreadyPresent'>
+      <TOTAL BACKWARD='71' FORWARD='1176' SCANS='15' />
+    </METHOD>
+    <METHOD DESCRIPTION='()V' FILE='/gpfs/main/research/java/linux/jdk-10.0.2/jmods/java.base.jmod' NAME='sun.util.calendar.BaseCalendar.&lt;clinit&gt;'>
+      <TOTAL BACKWARD='0' FORWARD='906' SCANS='1' />
+      <BASE BACKWARD='0' FORWARD='906' SCANS='1' />
+    </METHOD>
+    <METHOD DESCRIPTION='([BIIIII)V' FILE='/gpfs/main/research/java/linux/jdk-10.0.2/jmods/java.base.jmod' NAME='java.nio.HeapByteBuffer.&lt;init&gt;'>
+      <TOTAL BACKWARD='0' FORWARD='446' SCANS='3' />
+    </METHOD>
+    <METHOD DESCRIPTION='(I)V' FILE='/gpfs/main/home/spr/Eclipse/javasecurity/WebServer/bin/edu/brown/cs/securitylab/SecurityWebServer.class' NAME='edu.brown.cs.securitylab.SecurityWebServer.&lt;init&gt;'>
+      <TOTAL BACKWARD='0' FORWARD='324' SCANS='0' />
+    </METHOD>
+    <METHOD DESCRIPTION='(Ledu/brown/cs/securitylab/SecurityRequest;)Lfi/iki/elonen/NanoHTTPD$Response;' FILE='/gpfs/main/home/spr/Eclipse/javasecurity/WebServer/bin/edu/brown/cs/securitylab/SecurityBenefits.class' NAME='edu.brown.cs.securitylab.SecurityBenefits.updateBenefits'>
+      <TOTAL BACKWARD='79' FORWARD='751' SCANS='5' />
+    </METHOD>
+    <METHOD DESCRIPTION='(Ledu/brown/cs/securitylab/SecurityRequest;Z)Lfi/iki/elonen/NanoHTTPD$Response;' FILE='/gpfs/main/home/spr/Eclipse/javasecurity/WebServer/bin/edu/brown/cs/securitylab/SecurityBenefits.class' NAME='edu.brown.cs.securitylab.SecurityBenefits.displayBenefits'>
+      <TOTAL BACKWARD='62' FORWARD='640' SCANS='8' />
+    </METHOD>
+    <METHOD DESCRIPTION='(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/util/Map;Lfi/iki/elonen/NanoHTTPD$CookieHandler;)Lfi/iki/elonen/NanoHTTPD$Response;' FILE='/gpfs/main/home/spr/Eclipse/javasecurity/WebServer/bin/edu/brown/cs/securitylab/SecurityWebServer.class' NAME='edu.brown.cs.securitylab.SecurityWebServer.getResponse'>
+      <TOTAL BACKWARD='1867' FORWARD='19947' SCANS='216' />
+    </METHOD>
+    <METHOD DESCRIPTION='(Ljava/io/File;)Z' FILE='/pro/ivy/lib/ivy.jar' NAME='edu.brown.cs.ivy.exec.IvySetup.setup'>
+      <TOTAL BACKWARD='0' FORWARD='572' SCANS='0' />
+    </METHOD>
+    <METHOD DESCRIPTION='(I)Ljava/nio/Buffer;' FILE='/gpfs/main/research/java/linux/jdk-10.0.2/jmods/java.base.jmod' NAME='java.nio.Buffer.position'>
+      <TOTAL BACKWARD='0' FORWARD='1011' SCANS='28' />
+    </METHOD>
+    <METHOD DESCRIPTION='()V' FILE='/research/people/spr/javasecurity/lib/nanohttpd.jar' NAME='fi.iki.elonen.NanoHTTPD$ServerRunnable.run'>
+      <TOTAL BACKWARD='1542' FORWARD='33184' SCANS='146' />
+    </METHOD>
+    <METHOD DESCRIPTION='(Ledu/brown/cs/securitylab/SecurityRequest;)Lfi/iki/elonen/NanoHTTPD$Response;' FILE='/gpfs/main/home/spr/Eclipse/javasecurity/WebServer/bin/edu/brown/cs/securitylab/SecurityAccount.class' NAME='edu.brown.cs.securitylab.SecurityAccount.handleLoginRequest'>
+      <TOTAL BACKWARD='138' FORWARD='2756' SCANS='28' />
+    </METHOD>
+    <METHOD DESCRIPTION='(Ljava/lang/String;Ljava/lang/String;)V' FILE='/gpfs/main/research/java/linux/jdk-10.0.2/jmods/java.base.jmod' NAME='java.util.PropertyPermission.&lt;init&gt;'>
+      <TOTAL BACKWARD='0' FORWARD='2' SCANS='0' />
+    </METHOD>
+    <METHOD DESCRIPTION='(Ljava/lang/String;)V' FILE='/gpfs/main/research/java/linux/jdk-10.0.2/jmods/java.base.jmod' NAME='java.lang.VirtualMachineError.&lt;init&gt;'>
+      <TOTAL BACKWARD='0' FORWARD='395' SCANS='35' />
+    </METHOD>
+    <METHOD DESCRIPTION='(I)V' FILE='/gpfs/main/research/java/linux/jdk-10.0.2/jmods/java.base.jmod' NAME='java.util.PropertyPermission.init'>
+      <TOTAL BACKWARD='0' FORWARD='2' SCANS='0' />
+    </METHOD>
+    <METHOD DESCRIPTION='(Ljava/lang/String;)V' FILE='/gpfs/main/research/java/linux/jdk-10.0.2/jmods/java.base.jmod' NAME='java.util.StringTokenizer.&lt;init&gt;'>
+      <TOTAL BACKWARD='0' FORWARD='1298' SCANS='12' />
+    </METHOD>
+    <METHOD DESCRIPTION='()Ljava/util/Calendar;' FILE='/gpfs/main/research/java/linux/jdk-10.0.2/jmods/java.base.jmod' NAME='java.util.Calendar.getInstance'>
+      <TOTAL BACKWARD='187' FORWARD='4142' SCANS='68' />
+    </METHOD>
+    <METHOD DESCRIPTION='(Ljava/lang/String;)V' FILE='/gpfs/main/research/java/linux/jdk-10.0.2/jmods/java.base.jmod' NAME='java.lang.InternalError.&lt;init&gt;'>
+      <TOTAL BACKWARD='0' FORWARD='397' SCANS='36' />
+    </METHOD>
+    <METHOD DESCRIPTION='()Z' FILE='/gpfs/main/research/java/linux/jdk-10.0.2/jmods/java.base.jmod' NAME='java.util.StringTokenizer.hasMoreTokens'>
+      <TOTAL BACKWARD='3' FORWARD='483' SCANS='9' />
+    </METHOD>
+    <METHOD DESCRIPTION='(IIII[BI)V' FILE='/gpfs/main/research/java/linux/jdk-10.0.2/jmods/java.base.jmod' NAME='java.nio.ByteBuffer.&lt;init&gt;'>
+      <TOTAL BACKWARD='0' FORWARD='958' SCANS='19' />
+    </METHOD>
+    <METHOD DESCRIPTION='()Ljava/lang/String;' FILE='/pro/ivy/lib/ivy.jar' NAME='edu.brown.cs.ivy.exec.IvySetup.findIvyDirectory'>
+      <TOTAL BACKWARD='0' FORWARD='24' SCANS='0' />
+    </METHOD>
+    <METHOD DESCRIPTION='(Ljava/lang/Object;)V' FILE='/research/people/spr/javasecurity/lib/nanohttpd.jar' NAME='fi.iki.elonen.NanoHTTPD.safeClose'>
+      <TOTAL BACKWARD='15' FORWARD='842' SCANS='50' />
+      <BASE BACKWARD='15' FORWARD='842' SCANS='50' />
+    </METHOD>
+    <METHOD DESCRIPTION='(Ledu/brown/cs/securitylab/SecurityRequest;)Lfi/iki/elonen/NanoHTTPD$Response;' FILE='/gpfs/main/home/spr/Eclipse/javasecurity/WebServer/bin/edu/brown/cs/securitylab/SecurityAccount.class' NAME='edu.brown.cs.securitylab.SecurityAccount.displayWelcomePage'>
+      <TOTAL BACKWARD='52' FORWARD='590' SCANS='6' />
+    </METHOD>
+    <METHOD DESCRIPTION='(Ljava/lang/String;)V' FILE='/gpfs/main/research/java/linux/jdk-10.0.2/jmods/java.base.jmod' NAME='java.lang.NullPointerException.&lt;init&gt;'>
+      <TOTAL BACKWARD='0' FORWARD='4' SCANS='0' />
+    </METHOD>
+    <METHOD DESCRIPTION='()V' FILE='/gpfs/main/research/java/linux/jdk-10.0.2/jmods/java.base.jmod' NAME='java.util.JapaneseImperialCalendar.&lt;clinit&gt;'>
+      <TOTAL BACKWARD='131' FORWARD='1134' SCANS='1' />
+      <BASE BACKWARD='131' FORWARD='1134' SCANS='1' />
+    </METHOD>
+    <METHOD DESCRIPTION='(Ljava/lang/String;Ledu/brown/cs/ivy/file/IvyDatabase$DbmsType;)V' FILE='/pro/ivy/lib/ivy.jar' NAME='edu.brown.cs.ivy.file.IvyDatabase.checkLoad'>
+      <TOTAL BACKWARD='0' FORWARD='24' SCANS='0' />
+    </METHOD>
+    <METHOD DESCRIPTION='()V' FILE='/research/people/spr/javasecurity/lib/nanohttpd.jar' NAME='fi.iki.elonen.NanoHTTPD$DefaultTempFileManager.clear'>
+      <TOTAL BACKWARD='0' FORWARD='415' SCANS='22' />
+    </METHOD>
+    <METHOD DESCRIPTION='(Ljava/lang/String;)V' FILE='/gpfs/main/research/java/linux/jdk-10.0.2/jmods/java.base.jmod' NAME='java.lang.Throwable.&lt;init&gt;'>
+      <TOTAL BACKWARD='0' FORWARD='2264' SCANS='195' />
+      <BASE BACKWARD='0' FORWARD='2264' SCANS='195' />
+    </METHOD>
+    <METHOD DESCRIPTION='(Ledu/brown/cs/securitylab/SecurityRequest;)Lfi/iki/elonen/NanoHTTPD$Response;' FILE='/gpfs/main/home/spr/Eclipse/javasecurity/WebServer/bin/edu/brown/cs/securitylab/SecurityAccount.class' NAME='edu.brown.cs.securitylab.SecurityAccount.displaySignupPage'>
+      <TOTAL BACKWARD='0' FORWARD='66' SCANS='0' />
+    </METHOD>
+    <METHOD DESCRIPTION='(Ledu/brown/cs/securitylab/SecurityRequest;Z)Lfi/iki/elonen/NanoHTTPD$Response;' FILE='/gpfs/main/home/spr/Eclipse/javasecurity/WebServer/bin/edu/brown/cs/securitylab/SecurityContributions.class' NAME='edu.brown.cs.securitylab.SecurityContributions.displayContributions'>
+      <TOTAL BACKWARD='62' FORWARD='646' SCANS='8' />
+    </METHOD>
+    <METHOD DESCRIPTION='(Ljava/lang/ThreadGroup;Ljava/lang/Runnable;Ljava/lang/String;JLjava/security/AccessControlContext;Z)V' FILE='/gpfs/main/research/java/linux/jdk-10.0.2/jmods/java.base.jmod' NAME='java.lang.Thread.init'>
+      <TOTAL BACKWARD='79' FORWARD='908' SCANS='20' />
+    </METHOD>
+    <METHOD DESCRIPTION='(I)Ljava/lang/IllegalArgumentException;' FILE='/gpfs/main/research/java/linux/jdk-10.0.2/jmods/java.base.jmod' NAME='java.nio.Buffer.createCapacityException'>
+      <TOTAL BACKWARD='0' FORWARD='185' SCANS='10' />
+    </METHOD>
+    <METHOD DESCRIPTION='(Ljava/lang/String;)V' FILE='/gpfs/main/research/java/linux/jdk-10.0.2/jmods/java.base.jmod' NAME='java.lang.System.checkKey'>
+      <TOTAL BACKWARD='0' FORWARD='2' SCANS='0' />
+    </METHOD>
+    <METHOD DESCRIPTION='(Ljava/lang/String;)V' FILE='/gpfs/main/home/spr/Eclipse/javasecurity/WebServer/bin/edu/brown/cs/securitylab/SecurityException.class' NAME='edu.brown.cs.securitylab.SecurityException.&lt;init&gt;'>
+      <TOTAL BACKWARD='0' FORWARD='206' SCANS='18' />
+    </METHOD>
+    <METHOD DESCRIPTION='(Ledu/brown/cs/securitylab/SecurityRequest;)Lfi/iki/elonen/NanoHTTPD$Response;' FILE='/gpfs/main/home/spr/Eclipse/javasecurity/WebServer/bin/edu/brown/cs/securitylab/SecurityWebServer.class' NAME='edu.brown.cs.securitylab.SecurityWebServer.processResponse'>
+      <TOTAL BACKWARD='1931' FORWARD='19968' SCANS='218' />
+      <BASE BACKWARD='711' FORWARD='1060' SCANS='47' />
+    </METHOD>
+    <METHOD DESCRIPTION='(Ljava/lang/Class;)V' FILE='/gpfs/main/research/java/linux/jdk-10.0.2/jmods/java.base.jmod' NAME='java.lang.ref.Reference$ReferenceHandler.ensureClassInitialized'>
+      <TOTAL BACKWARD='0' FORWARD='17' SCANS='1' />
+    </METHOD>
+    <METHOD DESCRIPTION='(Ljava/lang/String;)V' FILE='/gpfs/main/research/java/linux/jdk-10.0.2/jmods/java.base.jmod' NAME='java.lang.IndexOutOfBoundsException.&lt;init&gt;'>
+      <TOTAL BACKWARD='0' FORWARD='4' SCANS='0' />
+    </METHOD>
+    <METHOD DESCRIPTION='(Ljava/lang/String;)V' FILE='/gpfs/main/research/java/linux/jdk-10.0.2/jmods/java.base.jmod' NAME='java.lang.Error.&lt;init&gt;'>
+      <TOTAL BACKWARD='0' FORWARD='1223' SCANS='105' />
+    </METHOD>
+    <METHOD DESCRIPTION='(Ljava/lang/String;Ljava/lang/String;Ljava/util/Map;Ljava/lang/String;Lfi/iki/elonen/NanoHTTPD$CookieHandler;)Ljava/util/Map;' FILE='/gpfs/main/home/spr/Eclipse/javasecurity/WebServer/bin/edu/brown/cs/securitylab/SecuritySession.class' NAME='edu.brown.cs.securitylab.SecuritySession.validateLogin'>
+      <TOTAL BACKWARD='97' FORWARD='2061' SCANS='28' />
+    </METHOD>
+    <METHOD DESCRIPTION='(Ljava/lang/Class;Ljava/util/Locale;)Lsun/util/locale/provider/LocaleProviderAdapter;' FILE='/gpfs/main/research/java/linux/jdk-10.0.2/jmods/java.base.jmod' NAME='sun.util.locale.provider.LocaleProviderAdapter.getAdapter'>
+      <TOTAL BACKWARD='48' FORWARD='1244' SCANS='33' />
+      <BASE BACKWARD='48' FORWARD='936' SCANS='21' />
+    </METHOD>
+    <METHOD DESCRIPTION='(Ljava/lang/ThreadLocal$ThreadLocalMap;)V' FILE='/gpfs/main/research/java/linux/jdk-10.0.2/jmods/java.base.jmod' NAME='java.lang.ThreadLocal$ThreadLocalMap.&lt;init&gt;'>
+      <TOTAL BACKWARD='78' FORWARD='906' SCANS='19' />
+      <BASE BACKWARD='78' FORWARD='906' SCANS='19' />
+    </METHOD>
+    <METHOD DESCRIPTION='(Ledu/brown/cs/securitylab/SecurityRequest;)Lfi/iki/elonen/NanoHTTPD$Response;' FILE='/gpfs/main/home/spr/Eclipse/javasecurity/WebServer/bin/edu/brown/cs/securitylab/SecurityAccount.class' NAME='edu.brown.cs.securitylab.SecurityAccount.displayLogoutPage'>
+      <TOTAL BACKWARD='0' FORWARD='8' SCANS='0' />
+    </METHOD>
+    <METHOD DESCRIPTION='(Ljava/lang/String;)I' FILE='/gpfs/main/research/java/linux/jdk-10.0.2/jmods/java.base.jmod' NAME='java.util.PropertyPermission.getMask'>
+      <TOTAL BACKWARD='0' FORWARD='0' SCANS='0' />
+    </METHOD>
+    <METHOD DESCRIPTION='(Ljava/util/Map;)V' FILE='/gpfs/main/home/spr/Eclipse/javasecurity/WebServer/bin/edu/brown/cs/securitylab/SecurityAccount.class' NAME='edu.brown.cs.securitylab.SecurityAccount.prepareUserData'>
+      <TOTAL BACKWARD='186' FORWARD='1845' SCANS='23' />
+    </METHOD>
+    <METHOD DESCRIPTION='(I)Ljava/nio/ByteBuffer;' FILE='/gpfs/main/research/java/linux/jdk-10.0.2/jmods/java.base.jmod' NAME='java.nio.ByteBuffer.position'>
+      <TOTAL BACKWARD='0' FORWARD='342' SCANS='9' />
+    </METHOD>
+    <METHOD DESCRIPTION='(Ljava/lang/ThreadLocal$ThreadLocalMap;Ljava/lang/ThreadLocal$1;)V' FILE='/gpfs/main/research/java/linux/jdk-10.0.2/jmods/java.base.jmod' NAME='java.lang.ThreadLocal$ThreadLocalMap.&lt;init&gt;'>
+      <TOTAL BACKWARD='78' FORWARD='906' SCANS='18' />
+    </METHOD>
+    <METHOD DESCRIPTION='([BII)Ljava/nio/ByteBuffer;' FILE='/gpfs/main/research/java/linux/jdk-10.0.2/jmods/java.base.jmod' NAME='java.nio.ByteBuffer.wrap'>
+      <TOTAL BACKWARD='0' FORWARD='442' SCANS='3' />
+    </METHOD>
+    <METHOD DESCRIPTION='(IZ)V' FILE='/research/people/spr/javasecurity/lib/nanohttpd.jar' NAME='fi.iki.elonen.NanoHTTPD.start'>
+      <TOTAL BACKWARD='263' FORWARD='4963' SCANS='28' />
+    </METHOD>
+    <METHOD DESCRIPTION='(I)V' FILE='/gpfs/main/research/java/linux/jdk-10.0.2/jmods/java.base.jmod' NAME='java.util.BitSet.set'>
+      <TOTAL BACKWARD='0' FORWARD='4' SCANS='0' />
+    </METHOD>
+    <METHOD DESCRIPTION='(I)Ljava/lang/String;' FILE='/gpfs/main/home/spr/Eclipse/javasecurity/WebServer/bin/edu/brown/cs/securitylab/SecurityRequest.class' NAME='edu.brown.cs.securitylab.SecurityRequest.setUserId'>
+      <TOTAL BACKWARD='188' FORWARD='4184' SCANS='58' />
+    </METHOD>
+    <METHOD DESCRIPTION='(Ledu/brown/cs/securitylab/SecurityRequest;)Lfi/iki/elonen/NanoHTTPD$Response;' FILE='/gpfs/main/home/spr/Eclipse/javasecurity/WebServer/bin/edu/brown/cs/securitylab/SecurityBenefits.class' NAME='edu.brown.cs.securitylab.SecurityBenefits.displayBenefits'>
+      <TOTAL BACKWARD='33' FORWARD='313' SCANS='0' />
+    </METHOD>
+    <METHOD DESCRIPTION='(Ledu/brown/cs/securitylab/SecurityRequest;)Lfi/iki/elonen/NanoHTTPD$Response;' FILE='/gpfs/main/home/spr/Eclipse/javasecurity/WebServer/bin/edu/brown/cs/securitylab/SecurityMemos.class' NAME='edu.brown.cs.securitylab.SecurityMemos.addMemos'>
+      <TOTAL BACKWARD='71' FORWARD='660' SCANS='5' />
+    </METHOD>
+    <METHOD DESCRIPTION='(Ljava/io/BufferedReader;Ljava/util/Map;Ljava/util/Map;Ljava/util/Map;)V' FILE='/research/people/spr/javasecurity/lib/nanohttpd.jar' NAME='fi.iki.elonen.NanoHTTPD$HTTPSession.decodeHeader'>
+      <TOTAL BACKWARD='204' FORWARD='3390' SCANS='52' />
+      <BASE BACKWARD='204' FORWARD='1404' SCANS='33' />
+    </METHOD>
+    <METHOD DESCRIPTION='(Ljava/lang/String;)V' FILE='/gpfs/main/research/java/linux/jdk-10.0.2/jmods/java.sql.jmod' NAME='java.sql.SQLException.&lt;init&gt;'>
+      <TOTAL BACKWARD='0' FORWARD='23' SCANS='2' />
+    </METHOD>
+    <METHOD DESCRIPTION='(Ljava/lang/ThreadGroup;Ljava/lang/Runnable;Ljava/lang/String;J)V' FILE='/gpfs/main/research/java/linux/jdk-10.0.2/jmods/java.base.jmod' NAME='java.lang.Thread.init'>
+      <TOTAL BACKWARD='77' FORWARD='898' SCANS='19' />
+    </METHOD>
+    <METHOD DESCRIPTION='(Ljava/lang/String;I)J' FILE='/gpfs/main/research/java/linux/jdk-10.0.2/jmods/java.base.jmod' NAME='java.lang.Long.parseLong'>
+      <TOTAL BACKWARD='69' FORWARD='1176' SCANS='14' />
+      <BASE BACKWARD='69' FORWARD='1144' SCANS='14' />
+    </METHOD>
+    <METHOD DESCRIPTION='(Ljava/util/Map;)V' FILE='/research/people/spr/javasecurity/lib/nanohttpd.jar' NAME='fi.iki.elonen.NanoHTTPD$HTTPSession.parseBody'>
+      <TOTAL BACKWARD='1245' FORWARD='6030' SCANS='79' />
+      <BASE BACKWARD='1245' FORWARD='3359' SCANS='66' />
+    </METHOD>
+    <METHOD DESCRIPTION='(Ledu/brown/cs/securitylab/SecurityRequest;)Lfi/iki/elonen/NanoHTTPD$Response;' FILE='/gpfs/main/home/spr/Eclipse/javasecurity/WebServer/bin/edu/brown/cs/securitylab/SecurityProfile.class' NAME='edu.brown.cs.securitylab.SecurityProfile.handleProfileUpdate'>
+      <TOTAL BACKWARD='139' FORWARD='2196' SCANS='22' />
+      <BASE BACKWARD='14' FORWARD='959' SCANS='12' />
+    </METHOD>
+    <METHOD DESCRIPTION='()V' FILE='/research/people/spr/javasecurity/lib/nanohttpd.jar' NAME='fi.iki.elonen.NanoHTTPD$DefaultTempFile.delete'>
+      <TOTAL BACKWARD='0' FORWARD='406' SCANS='34' />
+    </METHOD>
+    <METHOD DESCRIPTION='(Ljava/lang/String;)V' FILE='/gpfs/main/research/java/linux/jdk-10.0.2/jmods/java.base.jmod' NAME='java.lang.AssertionError.&lt;init&gt;'>
+      <TOTAL BACKWARD='0' FORWARD='395' SCANS='35' />
+    </METHOD>
+    <METHOD DESCRIPTION='(Lfi/iki/elonen/NanoHTTPD$Response$IStatus;Ljava/lang/String;Ljava/lang/String;)Lfi/iki/elonen/NanoHTTPD$Response;' FILE='/research/people/spr/javasecurity/lib/nanohttpd.jar' NAME='fi.iki.elonen.NanoHTTPD.newFixedLengthResponse'>
+      <TOTAL BACKWARD='24' FORWARD='1180' SCANS='34' />
+      <BASE BACKWARD='24' FORWARD='1180' SCANS='34' />
+    </METHOD>
+    <METHOD DESCRIPTION='(Ljava/lang/String;[Ljava/lang/Object;)Ljava/util/List;' FILE='/gpfs/main/home/spr/Eclipse/javasecurity/WebServer/bin/edu/brown/cs/securitylab/SecurityDatabase.class' NAME='edu.brown.cs.securitylab.SecurityDatabase.query'>
+      <TOTAL BACKWARD='1041' FORWARD='9393' SCANS='134' />
+      <BASE BACKWARD='340' FORWARD='2450' SCANS='44' />
+    </METHOD>
+    <METHOD DESCRIPTION='(Ljava/io/OutputStream;)V' FILE='/research/people/spr/javasecurity/lib/nanohttpd.jar' NAME='fi.iki.elonen.NanoHTTPD$Response.send'>
+      <TOTAL BACKWARD='1445' FORWARD='9316' SCANS='167' />
+      <BASE BACKWARD='1205' FORWARD='6684' SCANS='88' />
+    </METHOD>
+    <METHOD DESCRIPTION='()V' FILE='/gpfs/main/research/java/linux/jdk-10.0.2/jmods/java.base.jmod' NAME='java.lang.Thread.run'>
+      <TOTAL BACKWARD='4204' FORWARD='61107' SCANS='414' />
+    </METHOD>
+    <METHOD DESCRIPTION='(Lfi/iki/elonen/NanoHTTPD$ClientHandler;)V' FILE='/research/people/spr/javasecurity/lib/nanohttpd.jar' NAME='fi.iki.elonen.NanoHTTPD$DefaultAsyncRunner.exec'>
+      <TOTAL BACKWARD='3041' FORWARD='46402' SCANS='302' />
+    </METHOD>
+    <METHOD DESCRIPTION='()Ljava/lang/String;' FILE='/gpfs/main/research/java/linux/jdk-10.0.2/jmods/java.base.jmod' NAME='java.util.StringTokenizer.nextToken'>
+      <TOTAL BACKWARD='3' FORWARD='483' SCANS='9' />
+    </METHOD>
+    <METHOD DESCRIPTION='(Ledu/brown/cs/securitylab/SecurityRequest;Z)Lfi/iki/elonen/NanoHTTPD$Response;' FILE='/gpfs/main/home/spr/Eclipse/javasecurity/WebServer/bin/edu/brown/cs/securitylab/SecurityProfile.class' NAME='edu.brown.cs.securitylab.SecurityProfile.displayProfile'>
+      <TOTAL BACKWARD='62' FORWARD='646' SCANS='8' />
+    </METHOD>
+    <METHOD DESCRIPTION='(Lfi/iki/elonen/NanoHTTPD$IHTTPSession;)Lfi/iki/elonen/NanoHTTPD$Response;' FILE='/gpfs/main/home/spr/Eclipse/javasecurity/WebServer/bin/edu/brown/cs/securitylab/SecurityWebServer$HttpServer.class' NAME='edu.brown.cs.securitylab.SecurityWebServer$HttpServer.serve'>
+      <TOTAL BACKWARD='3043' FORWARD='26142' SCANS='286' />
+      <BASE BACKWARD='24' FORWARD='998' SCANS='61' />
+    </METHOD>
+    <METHOD DESCRIPTION='([Ljava/lang/String;)V' FILE='/gpfs/main/home/spr/Eclipse/javasecurity/WebServer/bin/edu/brown/cs/securitylab/SecurityWebServer.class' NAME='edu.brown.cs.securitylab.SecurityWebServer.main'>
+      <TOTAL BACKWARD='263' FORWARD='5287' SCANS='28' />
+    </METHOD>
+    <METHOD DESCRIPTION='(Ledu/brown/cs/securitylab/SecurityRequest;)Lfi/iki/elonen/NanoHTTPD$Response;' FILE='/gpfs/main/home/spr/Eclipse/javasecurity/WebServer/bin/edu/brown/cs/securitylab/SecurityProfile.class' NAME='edu.brown.cs.securitylab.SecurityProfile.displayProfile'>
+      <TOTAL BACKWARD='33' FORWARD='314' SCANS='0' />
+    </METHOD>
+    <METHOD DESCRIPTION='(Ljava/lang/String;Ljava/util/Map;)Lfi/iki/elonen/NanoHTTPD$Response;' FILE='/gpfs/main/home/spr/Eclipse/javasecurity/WebServer/bin/edu/brown/cs/securitylab/SecurityRequest.class' NAME='edu.brown.cs.securitylab.SecurityRequest.render'>
+      <TOTAL BACKWARD='9' FORWARD='1075' SCANS='31' />
+      <BASE BACKWARD='0' FORWARD='805' SCANS='22' />
+    </METHOD>
+    <METHOD DESCRIPTION='(Ljava/lang/String;)V' FILE='/gpfs/main/research/java/linux/jdk-10.0.2/jmods/java.base.jmod' NAME='java.lang.LinkageError.&lt;init&gt;'>
+      <TOTAL BACKWARD='0' FORWARD='17' SCANS='1' />
+    </METHOD>
+    <METHOD DESCRIPTION='(Ljava/lang/ThreadGroup;Ljava/lang/Runnable;Ljava/lang/String;JZ)V' FILE='/gpfs/main/research/java/linux/jdk-10.0.2/jmods/java.base.jmod' NAME='java.lang.Thread.&lt;init&gt;'>
+      <TOTAL BACKWARD='1' FORWARD='8' SCANS='0' />
+    </METHOD>
+    <METHOD DESCRIPTION='(Ljava/lang/Class;Ljava/util/Locale;)Lsun/util/locale/provider/LocaleProviderAdapter;' FILE='/gpfs/main/research/java/linux/jdk-10.0.2/jmods/java.base.jmod' NAME='sun.util.locale.provider.LocaleProviderAdapter.findAdapter'>
+      <TOTAL BACKWARD='0' FORWARD='238' SCANS='14' />
+    </METHOD>
+    <METHOD DESCRIPTION='(Ledu/brown/cs/securitylab/SecurityRequest;)Lfi/iki/elonen/NanoHTTPD$Response;' FILE='/gpfs/main/home/spr/Eclipse/javasecurity/WebServer/bin/edu/brown/cs/securitylab/SecurityAccount.class' NAME='edu.brown.cs.securitylab.SecurityAccount.displayLoginPage'>
+      <TOTAL BACKWARD='0' FORWARD='66' SCANS='0' />
+    </METHOD>
+    <METHOD DESCRIPTION='(Ljava/lang/String;[Ljava/lang/Object;)Ljava/sql/ResultSet;' FILE='/gpfs/main/home/spr/Eclipse/javasecurity/WebServer/bin/edu/brown/cs/securitylab/SecurityDatabase.class' NAME='edu.brown.cs.securitylab.SecurityDatabase.queryLocal'>
+      <TOTAL BACKWARD='701' FORWARD='6944' SCANS='89' />
+      <BASE BACKWARD='701' FORWARD='6944' SCANS='89' />
+    </METHOD>
+    <METHOD DESCRIPTION='(Ljava/lang/String;)Lfi/iki/elonen/NanoHTTPD$Response;' FILE='/gpfs/main/home/spr/Eclipse/javasecurity/WebServer/bin/edu/brown/cs/securitylab/SecurityRequest.class' NAME='edu.brown.cs.securitylab.SecurityRequest.renderError'>
+      <TOTAL BACKWARD='3' FORWARD='90' SCANS='3' />
+    </METHOD>
+    <METHOD DESCRIPTION='()V' FILE='/research/people/spr/javasecurity/lib/nanohttpd.jar' NAME='fi.iki.elonen.NanoHTTPD$ClientHandler.run'>
+      <TOTAL BACKWARD='4046' FORWARD='47136' SCANS='491' />
+      <BASE BACKWARD='35' FORWARD='2759' SCANS='100' />
+    </METHOD>
+    <METHOD DESCRIPTION='(Lfi/iki/elonen/NanoHTTPD$Response$Status;Ljava/lang/String;)V' FILE='/research/people/spr/javasecurity/lib/nanohttpd.jar' NAME='fi.iki.elonen.NanoHTTPD$ResponseException.&lt;init&gt;'>
+      <TOTAL BACKWARD='0' FORWARD='206' SCANS='18' />
+    </METHOD>
+    <METHOD DESCRIPTION='(Ljava/lang/String;)Ljava/lang/NumberFormatException;' FILE='/gpfs/main/research/java/linux/jdk-10.0.2/jmods/java.base.jmod' NAME='java.lang.NumberFormatException.forInputString'>
+      <TOTAL BACKWARD='0' FORWARD='22' SCANS='0' />
+    </METHOD>
+    <METHOD DESCRIPTION='()V' FILE='/pro/ivy/lib/ivy.jar' NAME='edu.brown.cs.ivy.file.IvyFile.&lt;clinit&gt;'>
+      <TOTAL BACKWARD='0' FORWARD='590' SCANS='0' />
+    </METHOD>
+    <METHOD DESCRIPTION='()V' FILE='/gpfs/main/research/java/linux/jdk-10.0.2/jmods/java.base.jmod' NAME='java.util.concurrent.ConcurrentHashMap.&lt;clinit&gt;'>
+      <TOTAL BACKWARD='0' FORWARD='17' SCANS='1' />
+    </METHOD>
+    <METHOD DESCRIPTION='()V' FILE='/gpfs/main/research/java/linux/jdk-10.0.2/jmods/java.base.jmod' NAME='java.util.StringTokenizer.setMaxDelimCodePoint'>
+      <TOTAL BACKWARD='0' FORWARD='2595' SCANS='25' />
+      <BASE BACKWARD='0' FORWARD='2595' SCANS='25' />
+    </METHOD>
+    <METHOD DESCRIPTION='(I)Ljava/nio/MappedByteBuffer;' FILE='/gpfs/main/research/java/linux/jdk-10.0.2/jmods/java.base.jmod' NAME='java.nio.MappedByteBuffer.position'>
+      <TOTAL BACKWARD='0' FORWARD='54' SCANS='0' />
+    </METHOD>
+    <METHOD DESCRIPTION='(Ljava/lang/String;)Lfi/iki/elonen/NanoHTTPD$Response;' FILE='/gpfs/main/home/spr/Eclipse/javasecurity/WebServer/bin/edu/brown/cs/securitylab/SecurityRequest.class' NAME='edu.brown.cs.securitylab.SecurityRequest.redirect'>
+      <TOTAL BACKWARD='3' FORWARD='90' SCANS='3' />
+    </METHOD>
+    <METHOD DESCRIPTION='(Ljava/lang/String;Ljava/lang/String;)V' FILE='/gpfs/main/research/java/linux/jdk-10.0.2/jmods/java.base.jmod' NAME='java.util.StringTokenizer.&lt;init&gt;'>
+      <TOTAL BACKWARD='0' FORWARD='1298' SCANS='12' />
+    </METHOD>
+    <METHOD DESCRIPTION='(I)Ljava/nio/Buffer;' FILE='/gpfs/main/research/java/linux/jdk-10.0.2/jmods/java.base.jmod' NAME='java.nio.Buffer.limit'>
+      <TOTAL BACKWARD='0' FORWARD='180' SCANS='10' />
+    </METHOD>
+    <METHOD DESCRIPTION='(Ljava/lang/String;)Ljava/util/Optional;' FILE='/gpfs/main/research/java/linux/jdk-10.0.2/jmods/java.base.jmod' NAME='sun.util.locale.provider.TimeZoneNameUtility.convertLDMLShortID'>
+      <TOTAL BACKWARD='0' FORWARD='44' SCANS='2' />
+    </METHOD>
+    <METHOD DESCRIPTION='(I)Ljava/lang/IllegalArgumentException;' FILE='/gpfs/main/research/java/linux/jdk-10.0.2/jmods/java.base.jmod' NAME='java.nio.Buffer.createPositionException'>
+      <TOTAL BACKWARD='0' FORWARD='1015' SCANS='27' />
+      <BASE BACKWARD='0' FORWARD='830' SCANS='17' />
+    </METHOD>
+    <METHOD DESCRIPTION='(I)Ljava/nio/MappedByteBuffer;' FILE='/gpfs/main/research/java/linux/jdk-10.0.2/jmods/java.base.jmod' NAME='java.nio.MappedByteBuffer.limit'>
+      <TOTAL BACKWARD='0' FORWARD='3' SCANS='0' />
+    </METHOD>
+    <METHOD DESCRIPTION='()V' FILE='/gpfs/main/research/java/linux/jdk-10.0.2/jmods/java.base.jmod' NAME='java.net.URLEncoder.&lt;clinit&gt;'>
+      <TOTAL BACKWARD='0' FORWARD='0' SCANS='0' />
+    </METHOD>
+    <METHOD DESCRIPTION='()V' FILE='/research/people/spr/javasecurity/lib/nanohttpd.jar' NAME='fi.iki.elonen.NanoHTTPD$HTTPSession.execute'>
+      <TOTAL BACKWARD='4653' FORWARD='47308' SCANS='551' />
+      <BASE BACKWARD='198' FORWARD='8514' SCANS='114' />
+    </METHOD>
+    <METHOD DESCRIPTION='(Ljava/lang/String;)V' FILE='/gpfs/main/research/java/linux/jdk-10.0.2/jmods/java.base.jmod' NAME='java.lang.NoClassDefFoundError.&lt;init&gt;'>
+      <TOTAL BACKWARD='0' FORWARD='17' SCANS='1' />
+    </METHOD>
+    <METHOD DESCRIPTION='()V' FILE='/gpfs/main/home/spr/Eclipse/javasecurity/WebServer/bin/edu/brown/cs/securitylab/SecurityDatabase.class' NAME='edu.brown.cs.securitylab.SecurityDatabase.&lt;init&gt;'>
+      <TOTAL BACKWARD='0' FORWARD='324' SCANS='0' />
+    </METHOD>
+    <METHOD DESCRIPTION='(Ljava/lang/String;)V' FILE='/research/people/spr/javasecurity/lib/nanohttpd.jar' NAME='fi.iki.elonen.NanoHTTPD$CookieHandler.delete'>
+      <TOTAL BACKWARD='97' FORWARD='2061' SCANS='28' />
+    </METHOD>
+    <METHOD DESCRIPTION='(I)Ljava/lang/String;' FILE='/research/people/spr/javasecurity/lib/nanohttpd.jar' NAME='fi.iki.elonen.NanoHTTPD$Cookie.getHTTPTime'>
+      <TOTAL BACKWARD='188' FORWARD='4142' SCANS='69' />
+    </METHOD>
+    <METHOD DESCRIPTION='(Ljava/lang/String;Ljava/lang/String;I)V' FILE='/research/people/spr/javasecurity/lib/nanohttpd.jar' NAME='fi.iki.elonen.NanoHTTPD$CookieHandler.set'>
+      <TOTAL BACKWARD='189' FORWARD='4144' SCANS='70' />
+    </METHOD>
+    <METHOD DESCRIPTION='(Ljava/lang/Object;)V' FILE='/research/people/spr/javasecurity/lib/nanohttpd.jar' NAME='fi.iki.elonen.NanoHTTPD.access$000'>
+      <TOTAL BACKWARD='15' FORWARD='843' SCANS='51' />
+    </METHOD>
+    <METHOD DESCRIPTION='(Ledu/brown/cs/securitylab/SecurityRequest;)Lfi/iki/elonen/NanoHTTPD$Response;' FILE='/gpfs/main/home/spr/Eclipse/javasecurity/WebServer/bin/edu/brown/cs/securitylab/SecurityAllocations.class' NAME='edu.brown.cs.securitylab.SecurityAllocations.displayAllocations'>
+      <TOTAL BACKWARD='62' FORWARD='646' SCANS='8' />
+    </METHOD>
+    <METHOD DESCRIPTION='(Ljava/lang/String;)Ljava/sql/Connection;' FILE='/pro/ivy/lib/ivy.jar' NAME='edu.brown.cs.ivy.file.IvyDatabase.openDatabase'>
+      <TOTAL BACKWARD='0' FORWARD='324' SCANS='0' />
+    </METHOD>
+    <METHOD DESCRIPTION='(Lsun/util/locale/provider/LocaleProviderAdapter$Type;)Lsun/util/locale/provider/LocaleProviderAdapter;' FILE='/gpfs/main/research/java/linux/jdk-10.0.2/jmods/java.base.jmod' NAME='sun.util.locale.provider.LocaleProviderAdapter.forType'>
+      <TOTAL BACKWARD='0' FORWARD='198' SCANS='12' />
+    </METHOD>
+    <METHOD DESCRIPTION='(Ljava/util/Locale;)Ljava/util/TimeZone;' FILE='/gpfs/main/research/java/linux/jdk-10.0.2/jmods/java.base.jmod' NAME='java.util.Calendar.defaultTimeZone'>
+      <TOTAL BACKWARD='0' FORWARD='44' SCANS='2' />
+    </METHOD>
+    <METHOD DESCRIPTION='(Ljava/lang/String;)J' FILE='/gpfs/main/research/java/linux/jdk-10.0.2/jmods/java.base.jmod' NAME='java.lang.Long.parseLong'>
+      <TOTAL BACKWARD='69' FORWARD='1175' SCANS='15' />
+    </METHOD>
+    <METHOD DESCRIPTION='(Ljava/lang/String;)V' FILE='/gpfs/main/research/java/linux/jdk-10.0.2/jmods/java.base.jmod' NAME='java.lang.Exception.&lt;init&gt;'>
+      <TOTAL BACKWARD='0' FORWARD='1041' SCANS='90' />
+    </METHOD>
+  </PERFORMANCE>
+</RESULT>
+SHUT DOWN BEDROCK
+
+ [ Process Terminated ]
+

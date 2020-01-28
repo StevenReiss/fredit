@@ -1,0 +1,29 @@
+<project name='fredit' default='bubbles'>
+
+   <property name='PRO' value='/pro' />
+   <property name='BUBBLESLIB' value='${PRO}/bubbles/lib' />
+
+   <target name='all'>
+      <ant antfile="build.xml" dir="javasrc" />
+   </target>
+
+   <path id='jdocsrc'>
+      <pathelement location='./javasrc' />
+      <pathelement location='${PRO}/ivy/javasrc' />
+    </path>
+
+   <target name='doc'>
+      <ant antfile='build.xml' dir='javasrc' target='doc' />
+      <zip zipfile='lib/apidoc.zip' basedir='doc' />
+   </target>
+
+   <target name='bubbles' depends='all'>
+      <jar destfile='fredit.jar'>
+	 <manifest>
+	 </manifest>
+	 <fileset dir='./java' includes='**/*.class' />
+      </jar>
+      <copy file='fredit.jar' tofile='${BUBBLESLIB}/fredit.jar' verbose='true' />
+   </target>
+
+</project>
