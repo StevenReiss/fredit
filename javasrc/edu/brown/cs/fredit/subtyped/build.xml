@@ -4,8 +4,8 @@
    <property name='PRO' value='/research' />
    <available file="${PRO}/ivy" type="dir" property="ivy.present" />
    <property name='IVYBIN' value='${PRO}/ivy/java' />
-   <property name='FAIT' value='/research/people/spr/fait' />
-   <property name='FREDIT' value='/research/people/spr/fredit' />
+   <property name='FAIT' value='${PRO}/fait' />
+   <property name='FREDIT' value='${PRO}/fredit' />
 
    <target name='init'>
       <path id='fait.classpath'>

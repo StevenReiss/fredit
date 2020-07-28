@@ -1,9 +1,29 @@
 <project name='fredit' default='bubbles'>
 
+   <property file='build.properties' />
    <property name='PRO' value='/pro' />
+   <property name='BUBBLESBIN' value='${PRO}/bubbles/java' />
    <property name='BUBBLESLIB' value='${PRO}/bubbles/lib' />
+   <property name='FREDIT' value="{PRO}/fredit" />
 
-   <target name='all'>
+   <available file="./build.properties" type='file' property='setup.done' />
+   <path id='setuppath'>
+      <pathelement location='..' />
+   </path>
+   <path id='freditpath'>
+      <pathelement location='.' />
+   </path>
+   <property name='setupfile' refid='setuppath' />
+   <property name='freditfile' refid='freditpath' />
+   <target name='setup' unless='setup.done'>
+      <echo file='./build.properties' message="PRO=${setupfile}${line.separator}" />
+      <echo file='./build.properties' message='FREDIT=${freditfile}${line.separator}' append='true' />
+      <mkdir dir='./java/edu/brown/cs/fredit' />
+      <property name='PRO' value='{setupfile}' />
+      <property name='FREDIT' value='{freditfile}' />
+   </target>
+
+   <target name='all' depends='setup'>
       <ant antfile="build.xml" dir="javasrc" />
    </target>
 
