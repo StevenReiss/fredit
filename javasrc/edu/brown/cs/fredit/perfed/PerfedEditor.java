@@ -442,7 +442,7 @@ private static class PerfValues {
 
 private class PerfTree extends SwingTreeTable {
 
-   private CellDrawer [] cell_drawer;
+   private transient CellDrawer [] cell_drawer;
 
    private static final long serialVersionUID = 1;
 

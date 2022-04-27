@@ -285,7 +285,7 @@ private static class ReflectData {
 
 private static class DataPanel extends SwingGridPanel {
 
-   private ReflectData reflect_data;
+   private transient ReflectData reflect_data;
    private static final long serialVersionUID = 1;
 
    DataPanel(ReflectData rd) {

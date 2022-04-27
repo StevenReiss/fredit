@@ -172,7 +172,7 @@ private class ValuesPanel extends SwingListPanel<SubtypedValue> {
 private class ValueEditor extends SwingGridPanel 
         implements ActionListener, UndoableEditListener {
    
-   private SubtypedValue for_value;
+   private transient SubtypedValue for_value;
    private static final long serialVersionUID = 1;   
    
    ValueEditor(SubtypedValue sv) {
