@@ -83,7 +83,7 @@ private PerformanceModel performance_model;
 private PerfTree	tree_table;
 
 
-private static double	CUTOFF_VALUE = 0.5;		// 0.5%
+private static double	CUTOFF_VALUE = 0.005;		// 0.5%
 
 
 
@@ -238,16 +238,16 @@ private class PerformanceRunner extends Thread {
 
    @Override public void run() {
       controller_main.waitForAnalysis();
-
+   
       CommandArgs args = new CommandArgs("CUTOFF",CUTOFF_VALUE);
       Element xml = controller_main.sendFaitReply(controller_main.getSessionId(),
-	    "PERFORMANCE",args,null);
+            "PERFORMANCE",args,null);
       System.err.println("FREDIT: Performance result: " + IvyXml.convertXmlToString(xml));
       performance_result = IvyXml.getChild(xml,"PERFORMANCE");
-
+   
       args = new CommandArgs("CUTOFF",CUTOFF_VALUE,"IGNORES","CheckNullness CheckInitialization ");
       Element cxml = controller_main.sendFaitReply(controller_main.getSessionId(),
-	    "CRITICAL",args,null);
+            "CRITICAL",args,null);
       System.err.println("FREDIT: Critical result: " + IvyXml.convertXmlToString(cxml));
       critical_result = IvyXml.getChild(cxml,"CRITICAL");
       updatePanel();
@@ -581,26 +581,32 @@ private class PerformanceModel extends SwingTreeTable.AbstractTreeTableModel {
       PerfData pd = (PerfData) node;
       if (pd == null) return "*";
       switch (col) {
-	 case -1 :
-	    return pd;
-	 case 0 :
-	    return pd.getName();
-	 case 1 :
-	    return pd.getSumValues().getNumForward();
-	 case 2 :
-	    int v0 = pd.getSumValues().getNumForward();
-	    int v1 = total_values.getNumForward();
-	    if (v1 == 0) return 0;
-	    return 100*v0/v1;
-	 case 3 :
-	    return pd.getSumValues().getNumScan();
-	 case 4 :
-	    int v2 = pd.getSumValues().getNumScan();
-	    int v3 = total_values.getNumScan();
-	    if (v3 == 0) return 0;
-	    return 100*v2/v3;
-	 case 5:
-	    return pd.getNumCritical() > 0;
+         case -1 :
+            return pd;
+         case 0 :
+            return pd.getName();
+         case 1 :
+            if (pd.getSumValues() == null) return 0;
+            return pd.getSumValues().getNumForward();
+         case 2 :
+            if (pd.getSumValues() == null) return 0;
+            int v0 = pd.getSumValues().getNumForward();
+            if (total_values == null) return 0;
+            int v1 = total_values.getNumForward();
+            if (v1 == 0) return 0;
+            return 100*v0/v1;
+         case 3 :
+            if (pd.getSumValues() == null) return 0;
+            return pd.getSumValues().getNumScan();
+         case 4 :
+            if (pd.getSumValues() == null) return 0;
+            if (total_values == null) return 0;
+            int v2 = pd.getSumValues().getNumScan();
+            int v3 = total_values.getNumScan();
+            if (v3 == 0) return 0;
+            return 100*v2/v3;
+         case 5:
+            return pd.getNumCritical() > 0;
        }
       return null;
     }

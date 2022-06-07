@@ -71,7 +71,7 @@ ControllerResourceFile(Element xml)
    file_path = IvyXml.getAttrString(xml,"NAME");
    file_priority = IvyXml.getAttrInt(xml,"PRIORITY");
    file_contents = IvyXml.loadXmlFromFile(file_path);
-   if (file_contents == null) {
+   if (file_contents == null && file_path != null) {
       int idx = file_path.indexOf("!/");
       if (idx > 0) {
          String jarnm = file_path.substring(0,idx);
