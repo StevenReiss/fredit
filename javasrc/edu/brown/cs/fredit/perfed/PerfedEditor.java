@@ -59,6 +59,7 @@ import org.w3c.dom.Element;
 
 import edu.brown.cs.fredit.controller.ControllerEditor;
 import edu.brown.cs.fredit.controller.ControllerMain;
+import edu.brown.cs.ivy.file.IvyLog;
 import edu.brown.cs.ivy.mint.MintConstants.CommandArgs;
 import edu.brown.cs.ivy.swing.SwingTreeTable;
 import edu.brown.cs.ivy.xml.IvyXml;
@@ -242,13 +243,13 @@ private class PerformanceRunner extends Thread {
       CommandArgs args = new CommandArgs("CUTOFF",CUTOFF_VALUE);
       Element xml = controller_main.sendFaitReply(controller_main.getSessionId(),
             "PERFORMANCE",args,null);
-      System.err.println("FREDIT: Performance result: " + IvyXml.convertXmlToString(xml));
+      IvyLog.logD("FREDIT","Performance result: " + IvyXml.convertXmlToString(xml));
       performance_result = IvyXml.getChild(xml,"PERFORMANCE");
    
       args = new CommandArgs("CUTOFF",CUTOFF_VALUE,"IGNORES","CheckNullness CheckInitialization ");
       Element cxml = controller_main.sendFaitReply(controller_main.getSessionId(),
             "CRITICAL",args,null);
-      System.err.println("FREDIT: Critical result: " + IvyXml.convertXmlToString(cxml));
+      IvyLog.logD("FREDIT","Critical result: " + IvyXml.convertXmlToString(cxml));
       critical_result = IvyXml.getChild(cxml,"CRITICAL");
       updatePanel();
     }
@@ -319,17 +320,17 @@ private static class PerfData {
     }
 
    void addChild(PerfData pd,PerfValues delta) {
-      System.err.println("PERFED: PreAdd child " + pd + " " + delta + " " + pd.getSumValues() + " TO " + this + " -> " + sum_values);
-
+      IvyLog.logD("PERFED","PreAdd child " + pd + " " + delta + " " + pd.getSumValues() + " TO " + this + " -> " + sum_values);
+   
       if (child_data == null) child_data = new ArrayList<>();
-
+   
       if (!child_data.contains(pd)) {
-	 child_data.add(pd);
-	 pd.parent_data = this;
+         child_data.add(pd);
+         pd.parent_data = this;
        }
       sum_values.add(delta);
-
-      System.err.println("PERFED: Add child " + pd + " " + delta + " " + pd.getSumValues() + " TO " + this + " -> " + sum_values);
+   
+      IvyLog.logD("PERFED","Add child " + pd + " " + delta + " " + pd.getSumValues() + " TO " + this + " -> " + sum_values);
     }
 
    void addCritical() {
@@ -358,35 +359,35 @@ private static class PerfData {
       if (item_description != null) buf.append(item_description);
       buf.append("<p><table>");
       if (child_data == null) {
-	 buf.append("<tr><td>Base Forward Steps</td><td>");
-	 buf.append(base_values.getNumForward());
-	 buf.append("</td></tr>");
-	 buf.append("<tr><td>Base Backward Steps</td><td>");
-	 buf.append(base_values.getNumBackward());
-	 buf.append("</td></tr>");
-	 buf.append("<tr><td>Base Scans</td><td>");
-	 buf.append(base_values.getNumScan());
-	 buf.append("</td></tr>");
-	 buf.append("<tr><td>Called Forward Steps</td><td>");
-	 buf.append(total_values.getNumForward());
-	 buf.append("</td></tr>");
-	 buf.append("<tr><td>Called Backward Steps</td><td>");
-	 buf.append(total_values.getNumBackward());
-	 buf.append("</td></tr>");
-	 buf.append("<tr><td>Called Scans</td><td>");
-	 buf.append(total_values.getNumScan());
-	 buf.append("</td></tr>");
+         buf.append("<tr><td>Base Forward Steps</td><td>");
+         buf.append(base_values.getNumForward());
+         buf.append("</td></tr>");
+         buf.append("<tr><td>Base Backward Steps</td><td>");
+         buf.append(base_values.getNumBackward());
+         buf.append("</td></tr>");
+         buf.append("<tr><td>Base Scans</td><td>");
+         buf.append(base_values.getNumScan());
+         buf.append("</td></tr>");
+         buf.append("<tr><td>Called Forward Steps</td><td>");
+         buf.append(total_values.getNumForward());
+         buf.append("</td></tr>");
+         buf.append("<tr><td>Called Backward Steps</td><td>");
+         buf.append(total_values.getNumBackward());
+         buf.append("</td></tr>");
+         buf.append("<tr><td>Called Scans</td><td>");
+         buf.append(total_values.getNumScan());
+         buf.append("</td></tr>");
        }
       else {
-	 buf.append("<tr><td>Total Forward Steps</td><td>");
-	 buf.append(sum_values.getNumForward());
-	 buf.append("</td></tr>");
-	 buf.append("<tr><td>Total Backward Steps</td><td>");
-	 buf.append(sum_values.getNumBackward());
-	 buf.append("</td></tr>");
-	 buf.append("<tr><td>Total Scans</td><td>");
-	 buf.append(sum_values.getNumScan());
-	 buf.append("</td></tr>");
+         buf.append("<tr><td>Total Forward Steps</td><td>");
+         buf.append(sum_values.getNumForward());
+         buf.append("</td></tr>");
+         buf.append("<tr><td>Total Backward Steps</td><td>");
+         buf.append(sum_values.getNumBackward());
+         buf.append("</td></tr>");
+         buf.append("<tr><td>Total Scans</td><td>");
+         buf.append(sum_values.getNumScan());
+         buf.append("</td></tr>");
        }
       buf.append("<tr><td>Flow Critical Steps</td><td>");
       buf.append(num_critical);
@@ -529,7 +530,7 @@ private class TreeCellRenderer extends DefaultTreeCellRenderer {
       else if (pd.getTotalValues() == null || total_values == null)
 	 bkg = new Color(0,0,0,0);
       else if (pd.getTotalValues().getNumForward() > total_values.getNumForward() / 100)
-	 bkg = new Color(128,255,128);
+	 bkg = new Color(255,255,128);
       else
 	 bkg = new Color(0,0,0,0);
       setBackground(bkg);

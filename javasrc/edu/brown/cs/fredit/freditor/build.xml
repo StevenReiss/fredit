@@ -20,7 +20,7 @@
 	 <pathelement location='${FAIT}/java' />
 	 <pathelement location='${IVYBIN}' />
 	 <pathelement location='${PRO}/bubbles/lib/junit.jar' />
-	 <fileset dir='${FAIT}/lib/' includes='asm*.jar' />
+	 <fileset dir='${PRO}/ivy/lib/' includes='asm.jar' />
 	 <fileset dir='${PRO}/ivy/lib/eclipsejar' includes='*.jar' />
       </path>
    </target>
@@ -45,6 +45,15 @@
 	 <formatter type='plain' />
 	 <test name='edu.brown.cs.fredit.freditor.FreditorTest' />
       </junit>
+   </target>
+
+   <target name='test-catre' depends='compile'>
+      <java classname='edu.brown.cs.fredit.freditor.Freditor' fork='true'
+	     output='/pro/fredit/test.out'>
+	 <classpath refid='test.classpath' />
+	 <arg value='-w' />
+	 <arg value='/Users/spr/Eclipse/catre' />
+      </java>
    </target>
 
 </project>

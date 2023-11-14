@@ -49,6 +49,7 @@ import org.w3c.dom.Element;
 
 import edu.brown.cs.fredit.controller.ControllerEditor;
 import edu.brown.cs.fredit.controller.ControllerMain;
+import edu.brown.cs.ivy.file.IvyLog;
 import edu.brown.cs.ivy.swing.SwingGridPanel;
 import edu.brown.cs.ivy.xml.IvyXml;
 
@@ -158,7 +159,7 @@ private class ReflectRunner extends Thread {
       controller_main.waitForAnalysis();
       Element xml = controller_main.sendFaitReply(controller_main.getSessionId(),
             "REFLECTION",null,null);
-      System.err.println("FREDIT: Reflection result: " + IvyXml.convertXmlToString(xml));
+      IvyLog.logD("REFLECT","Reflection result: " + IvyXml.convertXmlToString(xml));
       reflection_result = xml;
       updatePanel();
     }
@@ -237,15 +238,15 @@ private static class ReflectData {
       cast_abstract = false;
       Element castelt = IvyXml.getChild(xml,"CAST");
       if (castelt != null) {
-	 cast_abstract = IvyXml.getAttrBool(castelt,"ABSTRACT");
-	 cast_abstract |= IvyXml.getAttrBool(castelt,"INTERFACE");
-	 cast_type = IvyXml.getAttrString(castelt,"TYPE");
-	 for (Element childelt : IvyXml.children(castelt,"CHILD")) {
-	    boolean abs = IvyXml.getAttrBool(childelt,"ABSTRACT");
-	    abs |= IvyXml.getAttrBool(childelt,"INTERFACE");
-	    if (abs) continue;
-	    impl_types.add(IvyXml.getAttrString(childelt,"TYPE"));
-	  }
+         cast_abstract = IvyXml.getAttrBool(castelt,"ABSTRACT");
+         cast_abstract |= IvyXml.getAttrBool(castelt,"INTERFACE");
+         cast_type = IvyXml.getAttrString(castelt,"TYPE");
+         for (Element childelt : IvyXml.children(castelt,"CHILD")) {
+            boolean abs = IvyXml.getAttrBool(childelt,"ABSTRACT");
+            abs |= IvyXml.getAttrBool(childelt,"INTERFACE");
+            if (abs) continue;
+            impl_types.add(IvyXml.getAttrString(childelt,"TYPE"));
+          }
        }
     }
 

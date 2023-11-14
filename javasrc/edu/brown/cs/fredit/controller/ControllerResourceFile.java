@@ -42,6 +42,7 @@ import java.util.zip.ZipFile;
 
 import org.w3c.dom.Element;
 
+import edu.brown.cs.ivy.file.IvyLog;
 import edu.brown.cs.ivy.xml.IvyXml;
 
 public class ControllerResourceFile implements ControllerConstants
@@ -87,14 +88,14 @@ ControllerResourceFile(Element xml)
             jf.close();
           }
          catch (IOException e) {
-            System.err.println("Problem with zip file: " + e);
-            e.printStackTrace();
+            IvyLog.logE("FREDIT","Problem with zip file",e);
           }
        }
     }
    
    if (file_contents == null) {
       System.err.println("FREDIT: Can't load resource file " + file_path);
+      IvyLog.logE("FREDIT","Can't load resource file " + file_path);
     }
 }
 

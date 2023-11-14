@@ -52,6 +52,7 @@ import org.w3c.dom.Element;
 
 import edu.brown.cs.ivy.exec.IvyExec;
 import edu.brown.cs.ivy.exec.IvyExecQuery;
+import edu.brown.cs.ivy.file.IvyLog;
 import edu.brown.cs.ivy.mint.MintArguments;
 import edu.brown.cs.ivy.mint.MintConstants;
 import edu.brown.cs.ivy.mint.MintControl;
@@ -122,7 +123,7 @@ public ControllerMain(String [] args,WindowCreator wc)
    File f = new File(System.getProperty("user.home"));
    File f1 = new File(f,".bubbles");;
    props_dir = f1.getAbsolutePath();
-
+   
    scanArgs(args);
 }
 
@@ -278,14 +279,14 @@ private void setupBedrockAndFait()
     }
    String mint = "BUBBLES_" + System.getProperty("user.name").replace(" ","_") + "_" + wsname;
 
-   if (mint_id == null && workspace_id != null) {
-      mint_id = mint;
+   if (mint_id != null && workspace_id == null) {
       if (connectToBubbles()) {
 	 return;
        }
     }
 
    if (workspace_id != null) {
+      mint_id = mint;
       File f = new File(workspace_id);
       if (f.exists() && f.isDirectory() && f.canRead()) {
 	 startBedrock();
@@ -310,17 +311,38 @@ private void startBedrock()
 
    Properties sysprops = loadProperites("System");
    if (eclipse_dir == null && props_dir != null) {
-      eclipse_dir = getProperty(sysprops,"edu.brown.cs.bubbles.eclipse");
+      String prop =  "edu.brown.cs.bubbles.baseide." + System.getProperty("os.arch");
+      eclipse_dir = getProperty(sysprops,prop);
     }
-   File ebin = null;
    if (eclipse_dir == null) {
       System.err.println("FREDIT: Bubbles not running and can't find eclispe");
       System.exit(1);
     }
    File ed = new File(eclipse_dir);
-   ebin = new File(ed,"eclipse");
-   if (!ebin.exists()) ebin = new File(ed,"eclipse.exe");
-   if (!ebin.exists()) {
+   File ebin = null;
+   for (String s : new String [] { "eclipse", "eclipse.exe", "Eclipse.app" }) {
+      File ef1 = new File(ed,s);
+      if (ef1.exists() && ef1.canExecute()) {
+         if (ef1.isDirectory()) {
+            File ef2 = new File(ef1,"Contents");
+            ef1 = null;
+            for (String s1 : new String [] { "MacOS", "Eclipse" }) {
+               File ef3 = new File(ef2,s1);
+               File ef4 = new File(ef3,"eclipse");
+               if (ef4.exists() && ef4.canExecute()) {
+                  ef1 = ef4;
+                  break;
+                }
+             }
+          }
+         if (ef1 != null) {
+            ebin = ef1;
+            break;
+          }
+       }
+      ef1 = null;
+    }
+   if (ebin == null) {
       System.err.println("FREDIT: Bubbles not running and can't find eclipse binary");
       System.exit(1);
     }
@@ -344,7 +366,7 @@ private void startBedrock()
    // cmd += " -Xdebug -Xrunjdwp:transport=dt_socket,address=32328,server=y,suspend=n";
    // cmd += " -Xmx16000m";
 
-   System.err.println("RUN: " + cmd);
+   IvyLog.logD("FREDIT","RUN: " + cmd);
 
    try {
       for (int i = 0; i < 250; ++i) {
@@ -469,7 +491,7 @@ private void startFait()
 	 try {
 	    if (exec != null) {
 	       exec.exitValue();
-	       System.err.println("FREDIT: Fait terminated");
+	       IvyLog.logD("FREDIT","Fait terminated");
 	       running = false;
 	       break;
 	     }
@@ -568,7 +590,7 @@ private Properties loadProperites(String nm)
       fis.close();
     }
    catch (IOException e) {
-      System.err.println("FREDIT: Problem loading properties: " + e);
+      IvyLog.logE("FREDIT","Problem loading properties: " + e);
     }
    return p;
 }
@@ -732,7 +754,7 @@ private void sendFait(String sid,String cmd,CommandArgs args,String xml,MintRepl
    msg.end("FAIT");
    String msgt = msg.toString();
    msg.close();
-   System.err.println("FREDIT: Send to FAIT: " + msg);
+   IvyLog.logD("FREDIT","Send to FAIT: " + msg);
 
    if (rply == null) {
       mint_control.send(msgt,rply,MintConstants.MINT_MSG_NO_REPLY);
@@ -777,7 +799,7 @@ private class FaitHandler implements MintHandler {
    @Override public void receive(MintMessage msg,MintArguments args) {
       String cmd = args.getArgument(0);
       Element xml = msg.getXml();
-      System.err.println("FREDIT: Received from FAIT: " + IvyXml.convertXmlToString(xml));
+      IvyLog.logD("FREDIT","Received from FAIT: " + IvyXml.convertXmlToString(xml));
 
       switch (cmd) {
 	 case "ANALYSIS" :
@@ -813,7 +835,7 @@ private class BedrockExiter extends Thread {
     }
 
    @Override public void run() {
-      System.err.println("SHUT DOWN BEDROCK");
+      IvyLog.logD("FREDIT","SHUT DOWN BEDROCK");
       sendBubblesMessage("EXIT");
       mint_control = null;
     }

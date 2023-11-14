@@ -42,7 +42,7 @@
 	 <manifest>
 	 </manifest>
 	 <fileset dir='./java' includes='**/*.class' />
-      </jar>
+      </jar>			
       <copy file='fredit.jar' tofile='${BUBBLESLIB}/fredit.jar' verbose='true' />
    </target>
 
