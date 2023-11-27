@@ -6,11 +6,13 @@
    <property name='FAIT' value='${PRO}/fait' />
 
    <target name='all'>
+      <ant antfile="build.xml" dir="edu/brown/cs/fredit/fresh" />
       <ant antfile="build.xml" dir="edu/brown/cs/fredit/controller" />
       <ant antfile="build.xml" dir="edu/brown/cs/fredit/reflect" />
       <ant antfile="build.xml" dir="edu/brown/cs/fredit/perfed" />
       <ant antfile="build.xml" dir="edu/brown/cs/fredit/safetyed" />
       <ant antfile="build.xml" dir="edu/brown/cs/fredit/subtyped" />
+      <ant antfile="build.xml" dir="edu/brown/cs/fredit/probed" />
       <ant antfile="build.xml" dir="edu/brown/cs/fredit/freditor" />
    </target>
 
@@ -24,12 +26,14 @@
 
    <target name='doc'>
       <javadoc sourcepathref='jdocsrc' classpathref='bubbles.classpath' destdir='${PRO}/bubbles/doc'>
+	 <package name='edu.brown.cs.fredit.fresh' />
 	 <package name='edu.brown.cs.fredit.controller' />
 	 <package name='edu.brown.cs.fredit.freditor' />
 	 <package name='edu.brown.cs.fredit.perfed' />
 	 <package name='edu.brown.cs.fredit.reflect' />
 	 <package name='edu.brown.cs.fredit.safetyed' />
 	 <package name='edu.brown.cs.fredit.subtyped' />
+	 <package name='edu.brown.cs.fredit.probed' />
       </javadoc>
    </target>
 

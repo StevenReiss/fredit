@@ -45,6 +45,7 @@ import javax.swing.JScrollPane;
 import edu.brown.cs.fredit.controller.ControllerConstants;
 import edu.brown.cs.fredit.controller.ControllerMain;
 import edu.brown.cs.fredit.perfed.PerfedEditor;
+import edu.brown.cs.fredit.probed.ProbedEditor;
 import edu.brown.cs.fredit.reflect.ReflectEditor;
 import edu.brown.cs.fredit.safetyed.SafetyedEditor;
 import edu.brown.cs.fredit.subtyped.SubtypedEditor;
@@ -104,6 +105,7 @@ private void process()
    fredit_controller.addEditor(new SubtypedEditor(fredit_controller));
    fredit_controller.addEditor(new SafetyedEditor(fredit_controller));
    fredit_controller.addEditor(new ReflectEditor(fredit_controller));
+   fredit_controller.addEditor(new ProbedEditor(fredit_controller));
    fredit_controller.addEditor(new PerfedEditor(fredit_controller)); 
    
    top_frame = new JFrame("FAIT Resource Editor");

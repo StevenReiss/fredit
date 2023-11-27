@@ -38,18 +38,15 @@ package edu.brown.cs.fredit.subtyped;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
-import java.util.List;
 
 import javax.swing.JComponent;
 
-import org.w3c.dom.Element;
 
 import edu.brown.cs.fredit.controller.ControllerEditor;
 import edu.brown.cs.fredit.controller.ControllerMain;
-import edu.brown.cs.fredit.controller.ControllerResourceFile;
+import edu.brown.cs.fredit.fresh.FreshConstants.FreshSubtype;
 import edu.brown.cs.ivy.swing.SwingListPanel;
 import edu.brown.cs.ivy.swing.SwingListSet;
-import edu.brown.cs.ivy.xml.IvyXml;
 
 public class SubtypedEditor implements ControllerEditor, SubtypedConstants
 {
@@ -63,7 +60,7 @@ public class SubtypedEditor implements ControllerEditor, SubtypedConstants
 
 private ControllerMain          controller_main;
 private JComponent              subtype_component;
-private SwingListSet<SubtypedDef> subtype_definitions;
+private SwingListSet<FreshSubtype> subtype_definitions;
 
 
 /********************************************************************************/
@@ -119,14 +116,8 @@ public SubtypedEditor(ControllerMain cm)
 
 private void loadSubtypes()
 {
-   List<ControllerResourceFile> files = controller_main.getResourceFiles();
-   for (ControllerResourceFile crf : files) {
-      Element e = crf.getContents();
-      for (Element subtypexml : IvyXml.children(e,"SUBTYPE")) {
-         SubtypedDef def = new SubtypedDef(subtypexml);
-         if (def.getName() != null) 
-            subtype_definitions.addElement(def);
-       }
+   for (FreshSubtype subtype : controller_main.getSubtypes()) {
+      subtype_definitions.addElement(subtype);
     }
 }
 
@@ -137,7 +128,7 @@ private void loadSubtypes()
 /*                                                                              */
 /********************************************************************************/
 
-class SubtypedPanel extends SwingListPanel<SubtypedDef> {
+class SubtypedPanel extends SwingListPanel<FreshSubtype> {
 
    private static final long serialVersionUID = 1;   
 
@@ -148,12 +139,12 @@ class SubtypedPanel extends SwingListPanel<SubtypedDef> {
       setOpaque(true);
     }
    
-   @Override protected SubtypedDef createNewItem() {
+   @Override protected FreshSubtype createNewItem() {
       String nm = "Subtype_Definition_";
       for (int i = 1; ; ++i) {
          String nnm = nm + i;
          boolean fnd = false;
-         for (SubtypedDef sd : subtype_definitions) {
+         for (FreshSubtype sd : subtype_definitions) {
             if (sd.getName().equals(nnm)) fnd = true;
           }
          if (!fnd) {
@@ -161,16 +152,16 @@ class SubtypedPanel extends SwingListPanel<SubtypedDef> {
             break;
           }
        }
-      SubtypedDef def = new SubtypedDef(nm);
+      FreshSubtype def = controller_main.createSubtype(nm);
       return def;
     }
    
-   @Override protected SubtypedDef deleteItem(Object itm) {
-      return (SubtypedDef) itm;
+   @Override protected FreshSubtype deleteItem(Object itm) {
+      return (FreshSubtype) itm;
     }
    
-   @Override protected SubtypedDef editItem(Object itm) {
-      SubtypedDef def = (SubtypedDef) itm;
+   @Override protected FreshSubtype editItem(Object itm) {
+      FreshSubtype def = (FreshSubtype) itm;
       SubtypedDefEditor ed = new SubtypedDefEditor(controller_main,def);
       ed.createEditorWindow();
       return def;

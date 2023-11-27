@@ -25,8 +25,11 @@
 package edu.brown.cs.fredit.fresh;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.w3c.dom.Element;
 
@@ -64,8 +67,10 @@ public FreshManager()
 /*                                                                              */
 /********************************************************************************/
 
-public void addResourceFiles(Element xml)
+public void setupResourceFiles(Element xml)
 {
+   resource_files.clear();
+   
    Element files = xml;
    if (!IvyXml.isElement(xml,"FILES")) {
       files = IvyXml.getChild(xml,"FILES");
@@ -80,7 +85,6 @@ public void addResourceFiles(Element xml)
 }
 
 
-
 private static class PriorityComparator implements Comparator<FreshResourceFile> {
    
    @Override public int compare(FreshResourceFile f1,FreshResourceFile f2) {
@@ -90,7 +94,119 @@ private static class PriorityComparator implements Comparator<FreshResourceFile>
       return v;
     }
    
+}       // end of inner class PriorityComparator
+
+
+
+
+/********************************************************************************/
+/*                                                                              */
+/*      Subtype editing and access methods                                      */
+/*                                                                              */
+/********************************************************************************/
+
+public FreshSubtype createSubtype(String name)
+{
+   return new FreshSubtypeImpl(name);
 }
+
+
+public FreshSubtypeValue createSubtypeValue(String name)
+{
+   return new FreshSubtypeValueImpl(name);
+}
+
+
+
+/********************************************************************************/
+/*                                                                              */
+/*      Safety condition editing and access methods                             */
+/*                                                                              */
+/********************************************************************************/
+
+public FreshSafetyCondition createSafetyCondition(String name)
+{
+   return new FreshSafetyConditionImpl(name);
+}
+
+
+
+/********************************************************************************/
+/*                                                                              */
+/*      Get list of items that are skipped during flow analysis                 */
+/*                                                                              */
+/********************************************************************************/
+
+public Collection<FreshSkipItem> getSkippedItems()
+{
+   Map<String,FreshSkipItem> rslt = new HashMap<>();
+   
+   for (FreshResourceFile frf : resource_files) {
+      for (FreshMethodData md : frf.getMethodData()) {
+         if (md.isSkipped()) {
+            rslt.put(md.getName(),md);
+          }
+         else {
+            rslt.remove(md.getName());
+          }
+       }
+    }
+   
+   return rslt.values();
+}
+
+
+/********************************************************************************/
+/*                                                                              */
+/*      Get the set of active subtypes                                          */
+/*                                                                              */
+/********************************************************************************/
+
+public Collection<FreshSubtype> getSubtypes()
+{
+   Map<String,FreshSubtype> rslt = new HashMap<>();
+   for (FreshResourceFile frf : resource_files) {
+      for (FreshSubtypeImpl subtype : frf.getSubtypes()) {
+         String nm = subtype.getName();
+         if (nm == null) continue;
+         FreshSubtypeImpl prior = (FreshSubtypeImpl) rslt.get(nm);
+         if (prior != null) {
+            // update prior with new information
+          }
+         else {
+            rslt.put(nm,subtype);
+          }
+       }
+    }
+   return rslt.values();
+}
+
+
+/********************************************************************************/
+/*                                                                              */
+/*      Get the set of active safety conditions                                 */
+/*                                                                              */
+/********************************************************************************/
+
+public Collection<FreshSafetyCondition> getSafetyConditions()
+{
+   Map<String,FreshSafetyCondition> rslt = new HashMap<>();
+   for (FreshResourceFile frf : resource_files) {
+      for (FreshSafetyConditionImpl subtype : frf.getSafetyConditions()) {
+         String nm = subtype.getName();
+         if (nm == null) continue;
+         FreshSafetyConditionImpl prior = (FreshSafetyConditionImpl) rslt.get(nm);
+         if (prior != null) {
+            // update prior with new information
+          }
+         else {
+            rslt.put(nm,subtype);
+          }
+       }
+    }
+   return rslt.values();
+}
+
 
 }       // end of class FreshManger
 

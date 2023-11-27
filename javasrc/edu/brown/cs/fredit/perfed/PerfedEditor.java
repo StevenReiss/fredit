@@ -40,7 +40,6 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.event.MouseEvent;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -59,6 +58,7 @@ import org.w3c.dom.Element;
 
 import edu.brown.cs.fredit.controller.ControllerEditor;
 import edu.brown.cs.fredit.controller.ControllerMain;
+import edu.brown.cs.fredit.fresh.FreshConstants.FreshSkipItem;
 import edu.brown.cs.ivy.file.IvyLog;
 import edu.brown.cs.ivy.mint.MintConstants.CommandArgs;
 import edu.brown.cs.ivy.swing.SwingTreeTable;
@@ -77,9 +77,9 @@ public class PerfedEditor implements ControllerEditor, PerfedConstants
 private ControllerMain	controller_main;
 private Element 	performance_result;
 private Element 	critical_result;
-private PerfData	root_data;
-private PerfValues	total_values;
-private Map<String,PerfData> perf_map;
+private PerfedData	root_data;
+private PerfedValues	total_values;
+private Map<String,PerfedData> perf_map;
 private PerformanceModel performance_model;
 private PerfTree	tree_table;
 
@@ -102,7 +102,7 @@ public PerfedEditor(ControllerMain cm)
    critical_result = null;
    perf_map = new HashMap<>();
 
-   root_data = new PerfData("*TOTALS*");
+   root_data = new PerfedData("*TOTALS*");
    performance_model = new PerformanceModel();
 
    PerformanceRunner pr = new PerformanceRunner();
@@ -148,9 +148,9 @@ private void updatePanel()
 
    if (root_data.getChidren() != null) root_data.getChidren().clear();
 
-   total_values = new PerfValues(IvyXml.getChild(performance_result,"TOTALS"));
+   total_values = new PerfedValues(IvyXml.getChild(performance_result,"TOTALS"));
    for (Element mxml : IvyXml.children(performance_result,"METHOD")) {
-      PerfData pd = new PerfData(mxml);
+      PerfedData pd = new PerfedData(mxml);
       perf_map.put(pd.getName() + pd.getDescription(),pd);
       addParentData(pd,pd.getBaseValues());
     }
@@ -158,9 +158,13 @@ private void updatePanel()
    for (Element cxml : IvyXml.children(critical_result,"METHOD")) {
       String nm = IvyXml.getAttrString(cxml,"NAME");
       String ds = IvyXml.getAttrString(cxml,"DESCRIPTION");
-      PerfData pd = perf_map.get(nm+ds);
+      PerfedData pd = perf_map.get(nm+ds);
       if (pd == null) continue;
       pd.addCritical();
+    }
+   
+   for (FreshSkipItem skip : controller_main.getSkippedItems()) {
+      addSkipped(skip.getName());
     }
 
    sortChildren(root_data);
@@ -170,15 +174,15 @@ private void updatePanel()
 
 
 
-private void addParentData(PerfData pd,PerfValues delta)
+private void addParentData(PerfedData pd,PerfedValues delta)
 {
    String nm = pd.getName();
    int idx = nm.lastIndexOf(".");
    if (idx > 0) {
       String pnm = nm.substring(0,idx);
-      PerfData par = perf_map.get(pnm);
+      PerfedData par = perf_map.get(pnm);
       if (par == null) {
-	 par = new PerfData(pnm);
+	 par = new PerfedData(pnm);
 	 perf_map.put(pnm,par);
        }
       par.addChild(pd,delta);
@@ -190,6 +194,26 @@ private void addParentData(PerfData pd,PerfValues delta)
 }
 
 
+private void addSkipped(String name)
+{
+   String [] names = name.split("\\.");
+   PerfedData node = root_data;
+   String nm0 = null;
+   for (int i = 0; i < names.length; ++i) {
+      nm0 = (nm0 == null ? names[i] : nm0 + "." + names[i]);
+      PerfedData fnd = perf_map.get(nm0);
+      if (fnd == null) {
+         fnd = new PerfedData(nm0);
+         node.addChild(fnd,null);
+         perf_map.put(nm0,fnd);
+       }
+      node = fnd;
+    }
+   node.setSkipped(true);
+   
+}
+
+
 
 /********************************************************************************/
 /*										*/
@@ -197,22 +221,22 @@ private void addParentData(PerfData pd,PerfValues delta)
 /*										*/
 /********************************************************************************/
 
-private void sortChildren(PerfData pd)
+private void sortChildren(PerfedData pd)
 {
-   List<PerfData> c = pd.getChidren();
+   List<PerfedData> c = pd.getChidren();
    if (c == null || c.size() == 0) return;
 
    Collections.sort(c,new PerfComparator());
 
-   for (PerfData cd : c) sortChildren(cd);
+   for (PerfedData cd : c) sortChildren(cd);
 }
 
 
 
 
-private class PerfComparator implements Comparator<PerfData> {
+private class PerfComparator implements Comparator<PerfedData> {
 
-   @Override public int compare(PerfData pd1,PerfData pd2) {
+   @Override public int compare(PerfedData pd1,PerfedData pd2) {
       int d = pd1.getSumValues().getNumForward() - pd2.getSumValues().getNumForward();
       if (d < 0) return 1;
       if (d > 0) return -1;
@@ -255,183 +279,6 @@ private class PerformanceRunner extends Thread {
     }
 
 }	// end of inner class PerformanceRunner
-
-
-
-/********************************************************************************/
-/*										*/
-/*	Performance data							*/
-/*										*/
-/********************************************************************************/
-
-
-private static class PerfData {
-
-   private String item_name;
-   private String item_description;
-   private String from_file;
-   private boolean in_project;
-   private PerfValues base_values;
-   private PerfValues total_values;
-   private PerfValues sum_values;
-   private PerfData parent_data;
-   private List<PerfData> child_data;
-   private int num_critical;
-
-   PerfData(String name) {
-      item_name = name;
-      base_values = new PerfValues(null);
-      total_values = new PerfValues(null);
-      sum_values = new PerfValues(null);
-      parent_data = null;
-      child_data = null;
-      num_critical = 0;
-    }
-
-   PerfData(Element xml) {
-      item_name = IvyXml.getAttrString(xml,"NAME");
-      item_description = IvyXml.getAttrString(xml,"DESCRIPTION");
-      from_file = IvyXml.getAttrString(xml,"FILE");
-      in_project = IvyXml.getAttrBool(xml,"INPROJECT");
-      base_values = new PerfValues(IvyXml.getChild(xml,"BASE"));
-      total_values = new PerfValues(IvyXml.getChild(xml,"TOTAL"));
-      sum_values = new PerfValues(null);
-      sum_values.add(total_values);
-      parent_data = null;
-      child_data = null;
-    }
-
-   String getName()				{ return item_name; }
-   String getDescription()			{ return item_description; }
-   PerfValues getSumValues()			{ return sum_values; }
-   PerfValues getBaseValues()			{ return base_values; }
-   PerfValues getTotalValues()			{ return total_values; }
-   int getNumCritical() 			{ return num_critical; }
-
-   List<PerfData> getChidren()			{ return child_data; }
-
-   int getNumChildren() {
-      if (child_data == null) return 0;
-      return child_data.size();
-    }
-   PerfData getChild(int i) {
-      if (child_data == null || i < 0 || i >= child_data.size()) return null;
-      return child_data.get(i);
-    }
-
-   void addChild(PerfData pd,PerfValues delta) {
-      IvyLog.logD("PERFED","PreAdd child " + pd + " " + delta + " " + pd.getSumValues() + " TO " + this + " -> " + sum_values);
-   
-      if (child_data == null) child_data = new ArrayList<>();
-   
-      if (!child_data.contains(pd)) {
-         child_data.add(pd);
-         pd.parent_data = this;
-       }
-      sum_values.add(delta);
-   
-      IvyLog.logD("PERFED","Add child " + pd + " " + delta + " " + pd.getSumValues() + " TO " + this + " -> " + sum_values);
-    }
-
-   void addCritical() {
-      ++num_critical;
-      if (parent_data != null) parent_data.addCritical();
-    }
-
-   @Override public String toString() {
-      return item_name;
-    }
-
-   String getLocalName()
-   {
-      if (parent_data == null) return item_name;
-      String pd = parent_data.getName() + ".";
-      if (item_name.startsWith(pd)) {
-	 return item_name.substring(pd.length());
-       }
-      return item_name;
-   }
-
-   String getToolTip() {
-      StringBuffer buf = new StringBuffer();
-      buf.append("<html><p><b>");
-      buf.append(item_name);
-      if (item_description != null) buf.append(item_description);
-      buf.append("<p><table>");
-      if (child_data == null) {
-         buf.append("<tr><td>Base Forward Steps</td><td>");
-         buf.append(base_values.getNumForward());
-         buf.append("</td></tr>");
-         buf.append("<tr><td>Base Backward Steps</td><td>");
-         buf.append(base_values.getNumBackward());
-         buf.append("</td></tr>");
-         buf.append("<tr><td>Base Scans</td><td>");
-         buf.append(base_values.getNumScan());
-         buf.append("</td></tr>");
-         buf.append("<tr><td>Called Forward Steps</td><td>");
-         buf.append(total_values.getNumForward());
-         buf.append("</td></tr>");
-         buf.append("<tr><td>Called Backward Steps</td><td>");
-         buf.append(total_values.getNumBackward());
-         buf.append("</td></tr>");
-         buf.append("<tr><td>Called Scans</td><td>");
-         buf.append(total_values.getNumScan());
-         buf.append("</td></tr>");
-       }
-      else {
-         buf.append("<tr><td>Total Forward Steps</td><td>");
-         buf.append(sum_values.getNumForward());
-         buf.append("</td></tr>");
-         buf.append("<tr><td>Total Backward Steps</td><td>");
-         buf.append(sum_values.getNumBackward());
-         buf.append("</td></tr>");
-         buf.append("<tr><td>Total Scans</td><td>");
-         buf.append(sum_values.getNumScan());
-         buf.append("</td></tr>");
-       }
-      buf.append("<tr><td>Flow Critical Steps</td><td>");
-      buf.append(num_critical);
-      buf.append("</td></tr>");
-      buf.append("<tr><td>From File</td><td>");
-      buf.append(from_file);
-      buf.append("</td></tr>");
-      buf.append("<tr><td>Is In Project</td><td>");
-      buf.append(in_project);
-      buf.append("</td></tr>");
-      buf.append("</table>");
-      return buf.toString();
-    }
-
-}	// end of inner class PerfData
-
-
-private static class PerfValues {
-
-   private int num_forward;
-   private int num_backward;
-   private int num_scan;
-
-   PerfValues(Element xml) {
-      num_forward = IvyXml.getAttrInt(xml,"FORWARD",0);
-      num_backward = IvyXml.getAttrInt(xml,"BACKWARD",0);
-      num_scan = IvyXml.getAttrInt(xml,"SCANS",0);
-    }
-
-   int getNumForward()			{ return num_forward; }
-   int getNumBackward() 		{ return num_backward; }
-   int getNumScan()			{ return num_scan; }
-
-   void add(PerfValues pv) {
-      num_forward += pv.num_forward;
-      num_backward += pv.num_backward;
-      num_scan += pv.num_scan;
-    }
-
-   @Override public String toString() {
-      return "(" + num_forward + "," + num_backward + "," + num_scan + ")";
-    }
-
-}	// end of inner class PerfValues
 
 
 
@@ -480,8 +327,8 @@ private class PerfTree extends SwingTreeTable {
       int row = rowAtPoint(evt.getPoint());
       Object v0 = getValueAt(row,-1);
       if (v0 == null) return null;
-      if (v0 instanceof PerfData) {
-	 PerfData pd = (PerfData) v0;
+      if (v0 instanceof PerfedData) {
+	 PerfedData pd = (PerfedData) v0;
 	 return pd.getToolTip();
        }
       return "???";
@@ -524,7 +371,7 @@ private class TreeCellRenderer extends DefaultTreeCellRenderer {
    @Override public Component getTreeCellRendererComponent(JTree t,Object v,
 	 boolean sel,boolean exp,boolean leaf,int row,boolean hasfocus) {
       Color bkg = null;
-      PerfData pd = (PerfData) v;
+      PerfedData pd = (PerfedData) v;
       if (pd.getNumCritical() > 0)
 	 bkg = new Color(255,128,128);
       else if (pd.getTotalValues() == null || total_values == null)
@@ -561,12 +408,12 @@ private class PerformanceModel extends SwingTreeTable.AbstractTreeTableModel {
     }
 
    @Override public Object getChild(Object par,int idx) {
-      PerfData pd = (PerfData) par;
+      PerfedData pd = (PerfedData) par;
       return pd.getChild(idx);
     }
 
    @Override public int getChildCount(Object par) {
-      PerfData pd = (PerfData) par;
+      PerfedData pd = (PerfedData) par;
       return pd.getNumChildren();
     }
 
@@ -579,7 +426,7 @@ private class PerformanceModel extends SwingTreeTable.AbstractTreeTableModel {
     }
 
    @Override public Object getValueAt(Object node,int col) {
-      PerfData pd = (PerfData) node;
+      PerfedData pd = (PerfedData) node;
       if (pd == null) return "*";
       switch (col) {
          case -1 :
@@ -618,8 +465,8 @@ private class PerformanceModel extends SwingTreeTable.AbstractTreeTableModel {
       Object [] chld = new Object [nchild];
       int [] cidx = new int[nchild];
       for (int i = 0; i < nchild; ++i) {
-	 cidx[i] = i;
-	 chld[i] = getChild(model_root,i);
+         cidx[i] = i;
+         chld[i] = getChild(model_root,i);
        }
       fireTreeStructureChanged(PerfedEditor.this,path,cidx,chld);
       for (int i = 0; i < nchild; ++i) nodeChanged(path,chld[i]);

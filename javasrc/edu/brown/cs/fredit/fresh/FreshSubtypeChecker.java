@@ -39,7 +39,7 @@ public class FreshSubtypeChecker implements FreshConstants
 /*                                                                              */
 /********************************************************************************/
 
-private Map<FreshSubtypeValue,Map<FreshSubtypeValue,CheckData>> result_map;
+private Map<FreshSubtypeValueImpl,Map<FreshSubtypeValueImpl,CheckData>> result_map;
 
 
 
@@ -62,9 +62,9 @@ FreshSubtypeChecker()
 /*                                                                              */
 /********************************************************************************/
 
-void addMapping(FreshSubtypeValue v1,FreshSubtypeValue v2,ErrorLevel lvl,String msg)
+void addMapping(FreshSubtypeValueImpl v1,FreshSubtypeValueImpl v2,ErrorLevel lvl,String msg)
 {
-   Map<FreshSubtypeValue,CheckData> sm = result_map.get(v1);
+   Map<FreshSubtypeValueImpl,CheckData> sm = result_map.get(v1);
    if (sm == null) {
       sm = new HashMap<>();
       result_map.put(v1,sm);
@@ -74,9 +74,9 @@ void addMapping(FreshSubtypeValue v1,FreshSubtypeValue v2,ErrorLevel lvl,String 
 
 
 
-void addMapping(FreshSubtypeValue v1,FreshSubtypeValue v2,FreshSubtypeValue rv)
+void addMapping(FreshSubtypeValueImpl v1,FreshSubtypeValueImpl v2,FreshSubtypeValueImpl rv)
 {
-   Map<FreshSubtypeValue,CheckData> sm = result_map.get(v1);
+   Map<FreshSubtypeValueImpl,CheckData> sm = result_map.get(v1);
    if (sm == null) {
       sm = new HashMap<>();
       result_map.put(v1,sm);
@@ -86,9 +86,9 @@ void addMapping(FreshSubtypeValue v1,FreshSubtypeValue v2,FreshSubtypeValue rv)
 
 
 
-void addMapping(FreshSubtypeValue v1,FreshSubtypeValue v2,boolean r)
+void addMapping(FreshSubtypeValueImpl v1,FreshSubtypeValueImpl v2,boolean r)
 {
-   Map<FreshSubtypeValue,CheckData> sm = result_map.get(v1);
+   Map<FreshSubtypeValueImpl,CheckData> sm = result_map.get(v1);
    if (sm == null) {
       sm = new HashMap<>();
       result_map.put(v1,sm);
@@ -98,26 +98,26 @@ void addMapping(FreshSubtypeValue v1,FreshSubtypeValue v2,boolean r)
 
 
 
-ErrorLevel getErrorLevel(FreshSubtypeValue v1,FreshSubtypeValue v2)
+ErrorLevel getErrorLevel(FreshSubtypeValueImpl v1,FreshSubtypeValueImpl v2)
 {
-   Map<FreshSubtypeValue,CheckData> sm = result_map.get(v1);
+   Map<FreshSubtypeValueImpl,CheckData> sm = result_map.get(v1);
    if (sm == null) return null;
    return sm.get(v2).getErrorLevel();
 }
 
 
 
-String getErrorMessage(FreshSubtypeValue v1,FreshSubtypeValue v2)
+String getErrorMessage(FreshSubtypeValueImpl v1,FreshSubtypeValueImpl v2)
 {
-   Map<FreshSubtypeValue,CheckData> sm = result_map.get(v1);
+   Map<FreshSubtypeValueImpl,CheckData> sm = result_map.get(v1);
    if (sm == null) return null;
    return sm.get(v2).getErrorMessage();
 }
 
 
-FreshSubtypeValue getResultValue(FreshSubtypeValue v1,FreshSubtypeValue v2)
+FreshSubtypeValueImpl getResultValue(FreshSubtypeValueImpl v1,FreshSubtypeValueImpl v2)
 {
-   Map<FreshSubtypeValue,CheckData> sm = result_map.get(v1);
+   Map<FreshSubtypeValueImpl,CheckData> sm = result_map.get(v1);
    if (sm == null) return null;
    return sm.get(v2).getResultValue();
 }
@@ -132,9 +132,9 @@ FreshSubtypeValue getResultValue(FreshSubtypeValue v1,FreshSubtypeValue v2)
 
 void outputXml(String what,IvyXmlWriter xw)
 {
-   for (FreshSubtypeValue from : result_map.keySet()) {
-      Map<FreshSubtypeValue,CheckData> map = result_map.get(from);
-      for (FreshSubtypeValue to : map.keySet()) {
+   for (FreshSubtypeValueImpl from : result_map.keySet()) {
+      Map<FreshSubtypeValueImpl,CheckData> map = result_map.get(from);
+      for (FreshSubtypeValueImpl to : map.keySet()) {
          CheckData cd = map.get(to);
          cd.outputXml(what,from,to,xw);
        }
@@ -153,7 +153,7 @@ private static class CheckData {
    
    private ErrorLevel error_level;
    private String error_message;
-   private FreshSubtypeValue alt_value;
+   private FreshSubtypeValueImpl alt_value;
    private Boolean    bool_value;
    
    CheckData(ErrorLevel lvl,String msg) {
@@ -163,7 +163,7 @@ private static class CheckData {
       bool_value = null;
     }
    
-   CheckData(FreshSubtypeValue sv) {
+   CheckData(FreshSubtypeValueImpl sv) {
       error_level = null;
       error_message = null;
       alt_value = sv;
@@ -179,9 +179,9 @@ private static class CheckData {
    
    ErrorLevel getErrorLevel()                   { return error_level; }
    String getErrorMessage()                     { return error_message; }
-   FreshSubtypeValue getResultValue()               { return alt_value; }
+   FreshSubtypeValueImpl getResultValue()               { return alt_value; }
    
-   void outputXml(String what,FreshSubtypeValue from,FreshSubtypeValue to,IvyXmlWriter xw) {
+   void outputXml(String what,FreshSubtypeValueImpl from,FreshSubtypeValueImpl to,IvyXmlWriter xw) {
       xw.begin(what);
       switch (what) {
          case "MERGE" :

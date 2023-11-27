@@ -39,13 +39,18 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JTabbedPane;
+import javax.swing.JTextField;
 import javax.swing.event.UndoableEditEvent;
 import javax.swing.event.UndoableEditListener;
 
 import edu.brown.cs.fredit.controller.ControllerMain;
+import edu.brown.cs.fredit.fresh.FreshConstants.FreshSubtype;
+import edu.brown.cs.fredit.fresh.FreshConstants.FreshSubtypeValue;
 import edu.brown.cs.ivy.swing.SwingGridPanel;
 import edu.brown.cs.ivy.swing.SwingListPanel;
 import edu.brown.cs.ivy.swing.SwingListSet;
@@ -61,8 +66,8 @@ class SubtypedDefEditor implements SubtypedConstants
 /********************************************************************************/
 
 private ControllerMain          edit_controller;
-private SubtypedDef             subtype_def;
-private SwingListSet<SubtypedValue>    value_set;
+private FreshSubtype             subtype_def;
+private SwingListSet<FreshSubtypeValue> value_set;
 
 
 
@@ -72,12 +77,12 @@ private SwingListSet<SubtypedValue>    value_set;
 /*                                                                              */
 /********************************************************************************/
 
-SubtypedDefEditor(ControllerMain cm,SubtypedDef def)
+SubtypedDefEditor(ControllerMain cm,FreshSubtype def)
 {
    edit_controller = cm;
    subtype_def = def;
    value_set = new SwingListSet<>();
-   for (SubtypedValue val : def.getValues()) {
+   for (FreshSubtypeValue val : def.getValues()) {
       value_set.addElement(val);
     }
    
@@ -127,7 +132,7 @@ private class DefEditorPanel extends JTabbedPane {
 /*                                                                              */
 /********************************************************************************/
 
-private class ValuesPanel extends SwingListPanel<SubtypedValue> {
+private class ValuesPanel extends SwingListPanel<FreshSubtypeValue> {
    
    private static final long serialVersionUID = 1;
    
@@ -135,24 +140,24 @@ private class ValuesPanel extends SwingListPanel<SubtypedValue> {
       super(value_set);
     }
    
-   @Override protected SubtypedValue createNewItem() {
+   @Override protected FreshSubtypeValue createNewItem() {
       String nm = null;
       for (int i = 1; ; ++i) {
          nm = "NewValue_" + i;
-         SubtypedValue sv = subtype_def.getValue(nm);
+         FreshSubtypeValue sv = subtype_def.getValue(nm);
          if (sv == null) break;
        }
-      SubtypedValue sv = new SubtypedValue(nm);
+      FreshSubtypeValue sv = edit_controller.createSubtypeValue(nm);
       return sv;
     }
    
-   @Override protected SubtypedValue deleteItem(Object itm) {
-      SubtypedValue sv = (SubtypedValue) itm;
+   @Override protected FreshSubtypeValue deleteItem(Object itm) {
+      FreshSubtypeValue sv = (FreshSubtypeValue) itm;
       return sv;
     }
    
-   @Override protected SubtypedValue editItem(Object itm) {
-      SubtypedValue sv = (SubtypedValue) itm;
+   @Override protected FreshSubtypeValue editItem(Object itm) {
+      FreshSubtypeValue sv = (FreshSubtypeValue) itm;
       ValueEditor ve = new ValueEditor(sv);
       String ttl = "Value Editor";
       edit_controller.displayWindow(ttl,ve);
@@ -172,33 +177,69 @@ private class ValuesPanel extends SwingListPanel<SubtypedValue> {
 private class ValueEditor extends SwingGridPanel 
         implements ActionListener, UndoableEditListener {
    
-   private transient SubtypedValue for_value;
+   private transient FreshSubtypeValue for_value;
+   private JTextField name_field;
+   private JTextField attr_field;
+   private JCheckBox default_field;
+   private JCheckBox constant_field;
+   private JCheckBox uninit_field;
+   private JButton save_button;
+   private boolean has_changed;
+   
    private static final long serialVersionUID = 1;   
    
-   ValueEditor(SubtypedValue sv) {
+   ValueEditor(FreshSubtypeValue sv) {
       for_value = sv;
       beginLayout();
       addBannerLabel("Subtype Value Editor");
-      addTextField("Name",for_value.getName(),this,this);
+      name_field = addTextField("Name",for_value.getName(),this,this);
       StringBuffer buf = new StringBuffer();
       for (String s : for_value.getAttributes()) {
          if (buf.length() > 0) buf.append(" ");
          buf.append(s);
        }
-      addTextField("Attributes",buf.toString(),this,this);
-      addBoolean("Default",for_value.isDefault(),this);
-      addBoolean("Constant Default",for_value.isConstantDefault(),this);
-      addBoolean("Uninit Default",for_value.isUninitDefault(),this);
-      addBottomButton("Done","DONE",this);
+      attr_field = addTextField("Attributes",buf.toString(),this,this);
+      default_field = addBoolean("Default",for_value.isDefault(),this);
+      constant_field = addBoolean("Constant Default",for_value.isConstantDefault(),this);
+      uninit_field = addBoolean("Uninit Default",for_value.isUninitDefault(),this);
+      addBottomButton("Cancel","CANCEL",this);
+      save_button = addBottomButton("Save","SAVE",this);
       addBottomButtons();
+      save_button.setEnabled(false);
     }
    
    @Override public void actionPerformed(ActionEvent evt) {
-      
+      String cmd = evt.getActionCommand();
+      if (cmd.equalsIgnoreCase("CANCEL")) {
+         ControllerMain.getDisplayParent(this).setVisible(false);
+       }
+      else if (cmd.equalsIgnoreCase("SAVE")) {
+         for_value.setDefaults(default_field.isSelected(),
+               constant_field.isSelected(),
+               uninit_field.isSelected());
+         for_value.setAttributes(attr_field.getText());
+         for_value.setName(name_field.getText());
+         ControllerMain.getDisplayParent(this).setVisible(false);
+       }
+      else {
+         has_changed = true;
+         checkStatus();
+       }
     }
    
    @Override public void undoableEditHappened(UndoableEditEvent evt) {
-      
+      has_changed = true;
+      checkStatus();
+    }
+   
+   
+   
+   private void checkStatus() {
+      boolean ok = true;
+      if (!has_changed) ok = false;
+      if (name_field.getText().isEmpty()) ok = false;
+      if (attr_field.getText().isEmpty()) ok = false;
+      save_button.setEnabled(ok);
     }
    
 }       // end of inner class ValueEditor
@@ -220,7 +261,7 @@ private class StateModel extends DefaultComboBoxModel<Object> {
    
    StateModel(boolean any) {
       has_any = any;
-      for (SubtypedValue sv : subtype_def.getValues()) {
+      for (FreshSubtypeValue sv : subtype_def.getValues()) {
          addElement(sv);
        }
       if (has_any) insertElementAt("ANY",0);

@@ -35,10 +35,12 @@
 
 package edu.brown.cs.fredit.controller;
 
+import java.awt.Component;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
@@ -46,12 +48,20 @@ import java.util.Random;
 import java.util.StringTokenizer;
 
 import javax.swing.JComponent;
+import javax.swing.JDialog;
+import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import org.w3c.dom.Element;
 
+import edu.brown.cs.fredit.fresh.FreshManager;
+import edu.brown.cs.fredit.fresh.FreshConstants.FreshSafetyCondition;
+import edu.brown.cs.fredit.fresh.FreshConstants.FreshSkipItem;
+import edu.brown.cs.fredit.fresh.FreshConstants.FreshSubtype;
+import edu.brown.cs.fredit.fresh.FreshConstants.FreshSubtypeValue;
 import edu.brown.cs.ivy.exec.IvyExec;
 import edu.brown.cs.ivy.exec.IvyExecQuery;
+import edu.brown.cs.ivy.file.IvyFile;
 import edu.brown.cs.ivy.file.IvyLog;
 import edu.brown.cs.ivy.mint.MintArguments;
 import edu.brown.cs.ivy.mint.MintConstants;
@@ -76,6 +86,7 @@ public class ControllerMain implements ControllerConstants, MintConstants
 
 private String mint_id;
 private String workspace_id;
+private boolean using_bubbles;
 private MintControl mint_control;
 private String eclipse_dir;
 private String library_dir;
@@ -83,7 +94,8 @@ private String props_dir;
 private int    num_threads;
 private Element last_analysis;
 private ControllerPanel control_panel;
-private List<ControllerResourceFile> resource_files;
+private FreshManager file_manager;
+// private List<ControllerResourceFile> resource_files;
 private WindowCreator window_creator;
 private String session_id;
 private String result_id;
@@ -115,16 +127,19 @@ public ControllerMain(String [] args,WindowCreator wc)
    num_threads = 4;
    last_analysis = null;
    control_panel = null;
-   resource_files = null;
    window_creator = wc;
    session_id = SOURCE_ID;
    result_id = RESULT_ID;
+   
+   file_manager = new FreshManager();
 
    File f = new File(System.getProperty("user.home"));
    File f1 = new File(f,".bubbles");;
    props_dir = f1.getAbsolutePath();
    
    scanArgs(args);
+   
+   using_bubbles = mint_id != null && workspace_id == null;
 }
 
 
@@ -174,9 +189,20 @@ public void displayWindow(String ttl,JComponent contents)
 }
 
 
-public List<ControllerResourceFile> getResourceFiles()
+public static Component getDisplayParent(Component pane)
 {
-   return resource_files;
+   Class<?> bbl = null;
+   try {
+      bbl = Class.forName("edu.brown.cs.bubbles.BudaBubble");
+    }
+   catch (ClassNotFoundException e) { }
+   
+   for (Component c = pane; c != null; c = c.getParent()) {
+      if (bbl != null && bbl.isAssignableFrom(c.getClass())) return c;
+      if (c instanceof JDialog) return c;
+      if (c instanceof JFrame) return c;
+    }
+   return pane;
 }
 
 
@@ -264,7 +290,7 @@ private void setupBedrockAndFait()
 {
    if (usingBubbles()) {
       if (!connectToBubbles()) {
-	 System.err.println("FREDIT: Bubbles must be running with only -m option");
+	 System.err.println("FREDIT: Fredit must be running with only the -m option");
 	 System.exit(1);
        }
       return;
@@ -293,14 +319,15 @@ private void setupBedrockAndFait()
 	 startFait();
        }
     }
-
+   
    CommandArgs cargs = null;
    Element xml= sendFaitReply(session_id,"BEGIN",cargs,null);
    if (xml == null) {
       System.err.println("FREDIT: Can't start fait analysis");
       System.exit(1);
     }
-
+   
+   addUserFiles();
 }
 
 
@@ -409,6 +436,7 @@ private void startFait()
       String [] argv = new String [] { "-m", mint_id, "-DEBUG", "-TRACE",
 	    "-LOG", "/vol/spr/fredittest.log" };
       edu.brown.cs.fait.server.ServerMain.main(argv);
+      System.err.println("FREDIT: Fait log in /vol/spr/freditest.log");
       return;
     }
 
@@ -513,32 +541,101 @@ private void startFait()
 
 
 
+private void addUserFiles()
+{
+   IvyXmlWriter xw = new IvyXmlWriter();
+
+   Element xml = sendBubblesXmlReply("PROJECTS",null,null,null);
+   for (Element pxml : IvyXml.children(xml,"PROJECT")) {
+      if (IvyXml.getAttrBool(pxml,"ISJAVA")) {
+         String name = IvyXml.getAttrString(pxml,"NAME");
+         CommandArgs args = new CommandArgs("FILES",true);
+         Element fxml = sendBubblesXmlReply("OPENPROJECT",name,args,null);
+         fxml = IvyXml.getChild(fxml,"PROJECT");
+         fxml = IvyXml.getChild(fxml,"FILES");
+         for (Element file : IvyXml.children(fxml,"FILE")) {
+            if (IvyXml.getAttrBool(file,"SOURCE")) {
+               File f2 = new File(IvyXml.getText(file));
+               if (f2.exists() && f2.getName().endsWith(".java")) {
+                  f2 = IvyFile.getCanonical(f2);
+                  xw.begin("FILE");
+                  xw.field("NAME",f2.getPath());
+                  xw.end("FILE");
+                }
+             }
+          }
+       }
+    }
+   
+   sendFaitReply(session_id,"ADDFILE",null,xw.toString());
+   
+   xw.close();
+}
+
+
+
+
 /********************************************************************************/
 /*										*/
-/*	Analysis methods							*/
+/*	Resource file methods   						*/
 /*										*/
 /********************************************************************************/
 
 private void getResourceFilesFromFait()
 {
    waitForAnalysis();
-
-   resource_files = new ArrayList<>();
-
+   
    Element xml = sendFaitReply(session_id,"RESOURCES",null,null);
    if (xml == null) {
       System.err.println("FREDIT: Can't get resource files");
       System.exit(1);
     }
-   Element files = IvyXml.getChild(xml,"FILES");
-   for (Element filexml : IvyXml.children(files,"FILE")) {
-      ControllerResourceFile crf = new ControllerResourceFile(filexml);
-      resource_files.add(crf);
-    }
+   file_manager.setupResourceFiles(xml);
+}
+
+
+public Collection<FreshSkipItem> getSkippedItems()
+{
+   return file_manager.getSkippedItems();
+}
+
+
+public Collection<FreshSubtype> getSubtypes()
+{
+   return file_manager.getSubtypes();
+}
+
+
+public FreshSubtype createSubtype(String name)
+{
+   return file_manager.createSubtype(name); 
+}
+
+
+public FreshSubtypeValue createSubtypeValue(String name)
+{
+   return file_manager.createSubtypeValue(name); 
+}
+
+
+public Collection<FreshSafetyCondition> getSafetyConditions()
+{
+   return file_manager.getSafetyConditions();
+}
+
+
+public FreshSafetyCondition createSafetyCondition(String name)
+{
+   return file_manager.createSafetyCondition(name);
 }
 
 
 
+/********************************************************************************/
+/*                                                                              */
+/*      Analysis methods                                                        */
+/*                                                                              */
+/********************************************************************************/
 
 private void startAnalysis()
 {
@@ -666,9 +763,9 @@ private boolean pingEclipse()
 }
 
 
-private boolean usingBubbles()
+public boolean usingBubbles()
 {
-   return mint_id != null && workspace_id == null;
+   return using_bubbles;
 }
 
 
@@ -800,21 +897,23 @@ private class FaitHandler implements MintHandler {
       String cmd = args.getArgument(0);
       Element xml = msg.getXml();
       IvyLog.logD("FREDIT","Received from FAIT: " + IvyXml.convertXmlToString(xml));
-
+   
       switch (cmd) {
-	 case "ANALYSIS" :
-	    if (!IvyXml.getAttrBool(xml,"STARTED")) {
-	       String rid = IvyXml.getAttrString(xml,"ID");
-	       if (rid.equals(RESULT_ID)) receiveAnalysis(xml);
-	     }
-	    msg.replyTo();
-	    break;
-	 case "PING" :
-	    msg.replyTo("<PONG/>");
-	    break;
-	 default :
-	    msg.replyTo();
-	    break;
+         case "ANALYSIS" :
+            if (!IvyXml.getAttrBool(xml,"STARTED")) {
+               String rid = IvyXml.getAttrString(xml,"ID");
+               if (rid.equals(RESULT_ID) && !IvyXml.getAttrBool(xml,"ABORTED")) {
+                  receiveAnalysis(xml);
+                }
+             }
+            msg.replyTo();
+            break;
+         case "PING" :
+            msg.replyTo("<PONG/>");
+            break;
+         default :
+            msg.replyTo();
+            break;
        }
     }
 

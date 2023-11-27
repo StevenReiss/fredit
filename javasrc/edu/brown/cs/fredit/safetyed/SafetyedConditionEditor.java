@@ -46,6 +46,9 @@ import javax.swing.JLabel;
 import javax.swing.JTextField;
 
 import edu.brown.cs.fredit.controller.ControllerMain;
+import edu.brown.cs.fredit.fresh.FreshConstants.FreshSafetyCondition;
+import edu.brown.cs.fredit.fresh.FreshConstants.FreshSafetyState;
+import edu.brown.cs.fredit.fresh.FreshConstants.FreshSafetyTransition;
 import edu.brown.cs.ivy.swing.SwingGridPanel;
 
 class SafetyedConditionEditor implements SafetyedConstants
@@ -59,7 +62,7 @@ class SafetyedConditionEditor implements SafetyedConstants
 /********************************************************************************/
 
 private ControllerMain    edit_controller;
-private SafetyedCondition safety_condition;
+private FreshSafetyCondition safety_condition;
 
 
 
@@ -69,7 +72,7 @@ private SafetyedCondition safety_condition;
 /*                                                                              */
 /********************************************************************************/
 
-SafetyedConditionEditor(ControllerMain ctrl,SafetyedCondition cond)
+SafetyedConditionEditor(ControllerMain ctrl,FreshSafetyCondition cond)
 {
    edit_controller = ctrl;
    safety_condition = cond;
@@ -145,7 +148,7 @@ private class TransitionPanel extends SwingGridPanel {
    
    private void setupPanel() {
       int ct = 0;
-      for (SafetyedTransition trans : safety_condition.getTransitions()) {
+      for (FreshSafetyTransition trans : safety_condition.getTransitions()) {
          TransitionRow tr = new TransitionRow(trans);
          JLabel fromlbl = new JLabel("FROM ");
          JComboBox<Object> fromcbx = new JComboBox<>(tr.getFromModel());
@@ -182,13 +185,13 @@ private class TransitionPanel extends SwingGridPanel {
 
 private class TransitionRow implements ActionListener {
    
-   private SafetyedTransition for_transition;
+   private FreshSafetyTransition for_transition;
    private FromStateModel from_model;
    private ToStateModel to_model;
    private OnEventModel event_model;
    private AlertModel alert_model;
 
-   TransitionRow(SafetyedTransition t) {
+   TransitionRow(FreshSafetyTransition t) {
       for_transition = t;
       from_model = new FromStateModel();
       if (t.getFromState() == null) from_model.setSelectedItem("ANY");
@@ -224,7 +227,7 @@ private class FromStateModel extends DefaultComboBoxModel<Object> {
    private static final long serialVersionUID = 1;
    
    FromStateModel() {
-      for (SafetyedState st : safety_condition.getStates()) {
+      for (FreshSafetyState st : safety_condition.getStates()) {
          addElement(st);
        }
       insertElementAt("ANY",0);
@@ -238,7 +241,7 @@ private class ToStateModel extends DefaultComboBoxModel<Object> {
    private static final long serialVersionUID = 1;
    
    ToStateModel() {
-      for (SafetyedState st : safety_condition.getStates()) {
+      for (FreshSafetyState st : safety_condition.getStates()) {
          addElement(st);
        }
       insertElementAt("NO CHANGE",0);

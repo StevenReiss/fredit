@@ -35,18 +35,13 @@
 
 package edu.brown.cs.fredit.safetyed;
 
-import java.util.List;
-
 import javax.swing.JComponent;
-
-import org.w3c.dom.Element;
 
 import edu.brown.cs.fredit.controller.ControllerEditor;
 import edu.brown.cs.fredit.controller.ControllerMain;
-import edu.brown.cs.fredit.controller.ControllerResourceFile;
+import edu.brown.cs.fredit.fresh.FreshConstants.FreshSafetyCondition;
 import edu.brown.cs.ivy.swing.SwingListSet;
 import edu.brown.cs.ivy.swing.SwingListPanel;
-import edu.brown.cs.ivy.xml.IvyXml;
 
 public class SafetyedEditor implements ControllerEditor, SafetyedConstants
 {
@@ -60,7 +55,7 @@ public class SafetyedEditor implements ControllerEditor, SafetyedConstants
 
 private ControllerMain          controller_main;
 private JComponent              safety_component;
-private SwingListSet<SafetyedCondition> safety_conditions;
+private SwingListSet<FreshSafetyCondition> safety_conditions;
 
 
 
@@ -115,14 +110,9 @@ public SafetyedEditor(ControllerMain cm)
 
 private void loadSafetyConditions()
 {
-    List<ControllerResourceFile> files = controller_main.getResourceFiles();
-    for (ControllerResourceFile crf : files) {
-       Element e = crf.getContents();
-       for (Element safetyxml : IvyXml.children(e,"SAFETY")) {
-          SafetyedCondition cond = new SafetyedCondition(safetyxml);
-          safety_conditions.addElement(cond);
-        }
-     }
+   for (FreshSafetyCondition safety : controller_main.getSafetyConditions()) {
+      safety_conditions.addElement(safety);
+    }
 }
 
 
@@ -134,7 +124,7 @@ private void loadSafetyConditions()
 /*                                                                              */
 /********************************************************************************/
 
-class SafetyedPanel extends SwingListPanel<SafetyedCondition> {
+private class SafetyedPanel extends SwingListPanel<FreshSafetyCondition> {
  
    private static final long serialVersionUID = 1;
    
@@ -143,12 +133,12 @@ class SafetyedPanel extends SwingListPanel<SafetyedCondition> {
       setOpaque(false);
     }
    
-   @Override protected SafetyedCondition createNewItem() {
+   @Override protected FreshSafetyCondition createNewItem() {
       String nm = "SafetyCondition_";
       for (int i = 1; ; ++i) {
          String nnm = nm + i;
          boolean fnd = false;
-         for (SafetyedCondition sc : safety_conditions) {
+         for (FreshSafetyCondition sc : safety_conditions) {
             if (sc.getName().equals(nnm)) fnd = true;
           }
          if (!fnd) {
@@ -156,16 +146,16 @@ class SafetyedPanel extends SwingListPanel<SafetyedCondition> {
             break;
           }
        }
-      SafetyedCondition cond = new SafetyedCondition(nm);
+      FreshSafetyCondition cond = controller_main.createSafetyCondition(nm);
       return cond;
     }
    
-   @Override protected SafetyedCondition deleteItem(Object itm) {
-      return (SafetyedCondition) itm;
+   @Override protected FreshSafetyCondition deleteItem(Object itm) {
+      return (FreshSafetyCondition) itm;
     }
    
-   @Override protected SafetyedCondition editItem(Object itm) {
-      SafetyedCondition cond = (SafetyedCondition) itm;
+   @Override protected FreshSafetyCondition editItem(Object itm) {
+      FreshSafetyCondition cond = (FreshSafetyCondition) itm;
       SafetyedConditionEditor ed = new SafetyedConditionEditor(controller_main,cond);
       ed.createEditorWindow();
       return cond;

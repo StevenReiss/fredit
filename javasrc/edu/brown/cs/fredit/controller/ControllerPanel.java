@@ -38,6 +38,8 @@ package edu.brown.cs.fredit.controller;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.JComponent;
 import javax.swing.JPanel;
@@ -105,7 +107,8 @@ void addTab(String name,JComponent tab)
 /*      Main Panel subclass                                                     */
 /*                                                                              */
 /********************************************************************************/
-private class MainPanel extends SwingGridPanel {
+
+private class MainPanel extends SwingGridPanel implements ActionListener {
    
    private JTabbedPane tab_pane;
    private static final long serialVersionUID = 1;   
@@ -123,9 +126,9 @@ private class MainPanel extends SwingGridPanel {
       tab_pane.setOpaque(false);
       addLabellessRawComponent("TABPANE",tab_pane,true,true);
       addSeparator();
-      addBottomButton("Revert","REVERT",null);
-      addBottomButton("Save","SAVE",null);
-      addBottomButton("Done","EXIT",null);
+      addBottomButton("Revert","REVERT",this);
+      addBottomButton("Save","SAVE",this);
+      addBottomButton("Done","DONE",this);
       addBottomButtons();
       
       setOpaque(true);
@@ -143,6 +146,26 @@ private class MainPanel extends SwingGridPanel {
      
       super.paintComponent(g);
     }
+   
+   @Override public void actionPerformed(ActionEvent evt) {
+      String cmd = evt.getActionCommand();
+      if (cmd.equalsIgnoreCase("REVERT")) {
+         // handle revert
+       }
+      else if (cmd.equalsIgnoreCase("SAVE")) {
+         // handle save
+         close();
+       }
+      else if (cmd.equalsIgnoreCase("DONE")) {
+         close();
+       }
+    }
+   
+   private void close() {
+      ControllerMain.getDisplayParent(this).setVisible(false);
+      if (!fredit_main.usingBubbles()) System.exit(0);
+    }
+   
    
 }       // end of inner class MainPanel
 

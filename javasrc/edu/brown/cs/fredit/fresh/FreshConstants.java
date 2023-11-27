@@ -24,6 +24,7 @@
 
 package edu.brown.cs.fredit.fresh;
 
+import java.util.Collection;
 import java.util.List;
 
 import edu.brown.cs.ivy.xml.IvyXmlWriter;
@@ -63,6 +64,67 @@ enum AllocMode {
    BINARY_INHERIT,
    AST,
    AST_INHERIT,
+}
+
+
+
+/********************************************************************************/
+/*                                                                              */
+/*      External Access                                                         */
+/*                                                                              */
+/********************************************************************************/
+
+interface FreshSkipItem {
+   
+   MethodDataKind getKind();
+   String getName();
+}
+
+
+interface FreshSubtype {
+   String getName();
+   List<FreshSubtypeValue> getValues();
+   FreshSubtypeValue getValue(String name);
+}
+
+interface FreshSubtypeValue {
+   String getName();
+   Collection<String> getAttributes();
+   boolean isDefault();
+   boolean isConstantDefault();
+   boolean isUninitDefault();
+   
+   void setDefaults(boolean dflt,boolean cnst,boolean uninit);
+   void setAttributes(String names);
+   void setName(String name);
+}
+
+interface FreshSubtypeInstanceCheck {
+   void outputXml(String what,IvyXmlWriter xw);
+}
+
+
+interface FreshSafetyCondition {
+   String getName();
+   Collection<FreshSafetyTransition> getTransitions();
+   Collection<FreshSafetyState> getStates();
+   FreshSafetyState getState(String name);
+   Collection<String> getEvents();
+}
+
+interface FreshSafetyState {
+   String getName();
+   boolean isInitial();
+}
+
+
+interface FreshSafetyTransition {
+   FreshSafetyState getFromState();
+   FreshSafetyState getToState();
+   String getEvent();
+   ErrorLevel getErrorLevel();
+   String getErrorMessage();
+   
 }
 
 

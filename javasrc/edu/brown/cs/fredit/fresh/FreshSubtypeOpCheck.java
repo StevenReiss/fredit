@@ -44,10 +44,10 @@ public class FreshSubtypeOpCheck implements FreshConstants
 /********************************************************************************/
 
 private Set<String>     operator_names;
-private FreshSubtypeValue   result_value;
-private FreshSubtypeValue [] arg_values;
+private FreshSubtypeValueImpl   result_value;
+private FreshSubtypeValueImpl [] arg_values;
 private boolean         and_check;
-private FreshSubtypeValue   return_value;
+private FreshSubtypeValueImpl   return_value;
 private int             return_arg;
 private String          call_name;
 
@@ -58,7 +58,7 @@ private String          call_name;
 /*                                                                              */
 /********************************************************************************/
 
-FreshSubtypeOpCheck(FreshSubtype sd,Element xml)
+FreshSubtypeOpCheck(FreshSubtypeImpl sd,Element xml)
 {
    String ops = IvyXml.getAttrString(xml,"OPERATOR");
    if (ops == null) operator_names = null;
@@ -81,11 +81,11 @@ FreshSubtypeOpCheck(FreshSubtype sd,Element xml)
     }
    else {
       StringTokenizer tok = new StringTokenizer(atyps," \t,;");
-      arg_values = new FreshSubtypeValue[tok.countTokens()];
+      arg_values = new FreshSubtypeValueImpl[tok.countTokens()];
       int i = 0;
       while (tok.hasMoreTokens()) {
          String t = tok.nextToken();
-         FreshSubtypeValue uv = null;
+         FreshSubtypeValueImpl uv = null;
          if (t.equals("*") || t.equals("ANY")) ;
          else {
             uv = sd.getValue(t);
@@ -95,11 +95,11 @@ FreshSubtypeOpCheck(FreshSubtype sd,Element xml)
       if (arg_values.length == 0) arg_values = null;
     }
    
-   FreshSubtypeValue any = sd.getValue(IvyXml.getAttrString(xml,"VALUE"));
+   FreshSubtypeValueImpl any = sd.getValue(IvyXml.getAttrString(xml,"VALUE"));
    if (any != null) {
       if (result_value == null) result_value = any;
       if (arg_values == null) {
-         arg_values = new FreshSubtypeValue [] { any };
+         arg_values = new FreshSubtypeValueImpl [] { any };
        }
       else {
          for (int i = 0; i < arg_values.length; ++i) {
@@ -154,7 +154,7 @@ void outputXml(IvyXmlWriter xw)
    if (call_name != null) xw.field("METHOD",call_name);
    if (arg_values != null) {
       StringBuffer buf = new StringBuffer();
-      for (FreshSubtypeValue val : arg_values) {
+      for (FreshSubtypeValueImpl val : arg_values) {
          if (!buf.isEmpty()) buf.append(" ");
          if (val == null) buf.append("*");
          else buf.append(val.getName());

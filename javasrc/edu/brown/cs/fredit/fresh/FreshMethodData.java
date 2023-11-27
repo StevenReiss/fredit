@@ -38,7 +38,7 @@ import edu.brown.cs.ivy.xml.IvyXml;
 import edu.brown.cs.ivy.xml.IvyXmlWriter;
 
 
-public class FreshMethodData implements FreshConstants
+public class FreshMethodData implements FreshConstants, FreshConstants.FreshSkipItem
 {
 
 
@@ -243,6 +243,23 @@ FreshMethodData(Element xml)
     }
 }
 
+
+
+/********************************************************************************/
+/*                                                                              */
+/*      Access methods                                                          */
+/*                                                                              */
+/********************************************************************************/
+
+@Override public MethodDataKind getKind()               { return base_kind; }
+@Override public String getName()                       { return base_name; }
+
+public boolean isSkipped()
+{
+   if (dont_scan) return true;
+  
+   return false;
+}
 
 /********************************************************************************/
 /*										*/

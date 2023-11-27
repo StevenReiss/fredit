@@ -53,8 +53,8 @@ class FreshResourceFile implements FreshConstants
 private String          file_path;
 private int             file_priority;
 private int             file_count;
-private List<FreshSubtype> file_subtypes;
-private List<FreshSafetyCondition> safety_conditions;
+private List<FreshSubtypeImpl> file_subtypes;
+private List<FreshSafetyConditionImpl> safety_conditions;
 private List<FreshMethodData> method_data;
 private List<String>    load_classes;
 private Map<String,AllocMode> alloc_data;
@@ -112,10 +112,10 @@ FreshResourceFile(Element xml)
    for (Element sub : IvyXml.children(contents)) {
       switch (sub.getNodeName()) {
          case "SUBTYPE" :
-            file_subtypes.add(new FreshSubtype(sub));
+            file_subtypes.add(new FreshSubtypeImpl(sub));
             break;
          case "SAFETY" :
-            safety_conditions.add(new FreshSafetyCondition(sub));
+            safety_conditions.add(new FreshSafetyConditionImpl(sub));
             break;
          case "PACKAGE" :
          case "CLASS" :
@@ -157,10 +157,17 @@ FreshResourceFile(Element xml)
 /*                                                                              */
 /********************************************************************************/
 
-int getPriority()               { return file_priority; }
-int getCount()                  { return file_count; }
-String getFile()                { return file_path; }
-boolean isEditable()            { return is_editable; }
+int getPriority()                               { return file_priority; }
+int getCount()                                  { return file_count; }
+String getFile()                                { return file_path; }
+boolean isEditable()                            { return is_editable; }
+List<FreshMethodData> getMethodData()           { return method_data; }
+List<FreshSubtypeImpl> getSubtypes()            { return file_subtypes; }
+
+List<FreshSafetyConditionImpl> getSafetyConditions()
+{
+   return safety_conditions;
+}
 
 
 
@@ -173,10 +180,10 @@ boolean isEditable()            { return is_editable; }
 void outputXml(IvyXmlWriter xw)
 {
    xw.begin("FAIT");
-   for (FreshSubtype subtype : file_subtypes) {
+   for (FreshSubtypeImpl subtype : file_subtypes) {
       subtype.outputXml(xw);
     }
-   for (FreshSafetyCondition safety : safety_conditions) {
+   for (FreshSafetyConditionImpl safety : safety_conditions) {
       safety.outputXml(xw);
     }
    for (FreshMethodData method : method_data) {
