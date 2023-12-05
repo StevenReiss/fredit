@@ -1,8 +1,8 @@
 /********************************************************************************/
 /*                                                                              */
-/*              FreditorConstants.java                                          */
+/*              ProbedConstants.java                                            */
 /*                                                                              */
-/*      Fait Resource Editor standalone runner definitions                     */
+/*      Constants for problem editing panel                                     */
 /*                                                                              */
 /********************************************************************************/
 /*      Copyright 2013 Brown University -- Steven P. Reiss                    */
@@ -33,19 +33,20 @@
 
 
 
-package edu.brown.cs.fredit.freditor;
+package edu.brown.cs.fredit.probed;
 
-import edu.brown.cs.fredit.controller.ControllerConstants;
 
-public interface FreditorConstants extends ControllerConstants 
+
+public interface ProbedConstants
 {
 
-int     DEFAULT_WIDTH = 600;
-
-}       // end of interface FreditorConstants
 
 
 
+}       // end of interface ProbedConstants
 
-/* end of FreditorConstants.java */
+
+
+
+/* end of ProbedConstants.java */
 

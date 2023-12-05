@@ -170,10 +170,10 @@ public String getSessionId()
    return session_id;
 }
 
-public void addEditor(ControllerEditor ed)
+public void addEditor(ControllerEditor ed,boolean scroll)
 {
    if (control_panel == null) setup();
-   control_panel.addTab(ed.getName(),ed.getPanel());
+   control_panel.addTab(ed.getName(),ed.getPanel(),scroll);
 }
 
 

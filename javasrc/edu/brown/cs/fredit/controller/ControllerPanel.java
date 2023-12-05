@@ -93,11 +93,12 @@ JPanel getPanel()
 }
 
 
-void addTab(String name,JComponent tab)
+void addTab(String name,JComponent tab,boolean scroll)
 {
    if (main_panel == null) main_panel = new MainPanel();
    
-   main_panel.addTab(name,new JScrollPane(tab));
+   if (scroll) main_panel.addTab(name,new JScrollPane(tab));
+   else main_panel.addTab(name,tab);
 }
 
 

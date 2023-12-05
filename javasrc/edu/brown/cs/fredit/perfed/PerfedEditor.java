@@ -38,6 +38,7 @@ package edu.brown.cs.fredit.perfed;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.event.MouseEvent;
 import java.util.Collections;
@@ -46,12 +47,17 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.swing.JCheckBox;
 import javax.swing.JComponent;
+import javax.swing.JLabel;
 import javax.swing.JScrollPane;
+import javax.swing.JSlider;
 import javax.swing.JTable;
 import javax.swing.JTree;
 import javax.swing.ListSelectionModel;
+import javax.swing.SwingUtilities;
 import javax.swing.table.TableCellRenderer;
+import javax.swing.table.TableColumnModel;
 import javax.swing.tree.DefaultTreeCellRenderer;
 
 import org.w3c.dom.Element;
@@ -61,6 +67,9 @@ import edu.brown.cs.fredit.controller.ControllerMain;
 import edu.brown.cs.fredit.fresh.FreshConstants.FreshSkipItem;
 import edu.brown.cs.ivy.file.IvyLog;
 import edu.brown.cs.ivy.mint.MintConstants.CommandArgs;
+import edu.brown.cs.ivy.swing.SwingColorSet;
+import edu.brown.cs.ivy.swing.SwingGridPanel;
+import edu.brown.cs.ivy.swing.SwingRangeSlider;
 import edu.brown.cs.ivy.swing.SwingTreeTable;
 import edu.brown.cs.ivy.xml.IvyXml;
 
@@ -81,7 +90,7 @@ private PerfedData	root_data;
 private PerfedValues	total_values;
 private Map<String,PerfedData> perf_map;
 private PerformanceModel performance_model;
-private PerfTree	tree_table;
+private PerfTreeTable	tree_table;
 
 
 private static double	CUTOFF_VALUE = 0.005;		// 0.5%
@@ -120,9 +129,34 @@ public PerfedEditor(ControllerMain cm)
 
 @Override public JComponent getPanel()
 {
-   if (tree_table == null) tree_table = new PerfTree();
-
-   return new JScrollPane(tree_table);
+   if (tree_table == null) tree_table = new PerfTreeTable();
+   
+   SwingGridPanel pnl = new SwingGridPanel();
+   pnl.addGBComponent(new JScrollPane(tree_table),0,0,0,1,10,10);
+   
+   JSlider minrange = new SwingRangeSlider(0,40,1,5);
+   Font ft = minrange.getFont();
+   ft = ft.deriveFont(8.0f);
+   minrange.setFont(ft);
+   JSlider highrange = new SwingRangeSlider(0,10,0,30);
+   highrange.setFont(ft);
+   JCheckBox skipped = new JCheckBox("Show Skipped",true);
+   JCheckBox critical = new JCheckBox("Show Critical",true);
+   
+   int x = 0;
+   int y = 1;
+   pnl.addGBComponent(new JLabel("Min % "),x++,y,1,1,0,0);
+   pnl.addGBComponent(minrange,x++,y,1,1,5,0);
+   pnl.addGBComponent(skipped,x++,y,1,1,0,0);
+// x = 0;
+// ++y;
+   pnl.addGBComponent(new JLabel("High %:"),x++,y,1,1,0,0);   
+   pnl.addGBComponent(highrange,x++,y,1,1,5,0);
+   pnl.addGBComponent(critical,x++,y,1,1,0,0);
+   
+   return pnl;
+   
+//   return new JScrollPane(tree_table);
 }
 
 
@@ -168,8 +202,8 @@ private void updatePanel()
     }
 
    sortChildren(root_data);
-
-   performance_model.rootUpdated();
+   
+   SwingUtilities.invokeLater(new ModelUpdater());
 }
 
 
@@ -203,6 +237,7 @@ private void addSkipped(String name)
       nm0 = (nm0 == null ? names[i] : nm0 + "." + names[i]);
       PerfedData fnd = perf_map.get(nm0);
       if (fnd == null) {
+         if (i < names.length-1) return;
          fnd = new PerfedData(nm0);
          node.addChild(fnd,null);
          perf_map.put(nm0,fnd);
@@ -288,28 +323,39 @@ private class PerformanceRunner extends Thread {
 /*										*/
 /********************************************************************************/
 
-private class PerfTree extends SwingTreeTable {
+private class PerfTreeTable extends SwingTreeTable {
 
    private transient CellDrawer [] cell_drawer;
 
    private static final long serialVersionUID = 1;
 
 
-   PerfTree() {
+   PerfTreeTable() {
       super(performance_model);
-      setPreferredScrollableViewportSize(new Dimension(400,500));
+      setPreferredScrollableViewportSize(new Dimension(600,500));
       setRowSelectionAllowed(true);
       setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+      setSelectionBackground(SwingColorSet.getColorByName("lightblue"));
+      setSelectionForeground(Color.BLACK);
       cell_drawer = new CellDrawer[performance_model.getColumnCount()];
       JTree jt = getTree();
       jt.setCellRenderer(new TreeCellRenderer());
+      jt.expandRow(0);
       setToolTipText("");
       setOpaque(true);
+      TableColumnModel cm = getColumnModel();
+      cm.getColumn(0).setMinWidth(200);
+      cm.getColumn(1).setMinWidth(60);
+      cm.getColumn(2).setMinWidth(60);
+      cm.getColumn(3).setMinWidth(60);
+      cm.getColumn(4).setMinWidth(60);
+      cm.getColumn(5).setMinWidth(60);
+      cm.getColumn(0).setMaxWidth(Integer.MAX_VALUE);
     }
 
    @Override public TableCellRenderer getCellRenderer(int r,int c) {
       if (cell_drawer[c] == null) {
-	 cell_drawer[c] = new CellDrawer(super.getCellRenderer(r,c));
+         cell_drawer[c] = new CellDrawer(super.getCellRenderer(r,c));
        }
       return cell_drawer[c];
     }
@@ -319,7 +365,7 @@ private class PerfTree extends SwingTreeTable {
       Dimension sz = getSize();
       g.setColor(bc);
       g.fillRect(0,0,sz.width,sz.height);
-
+   
       super.paintComponent(g);
     }
 
@@ -328,11 +374,11 @@ private class PerfTree extends SwingTreeTable {
       Object v0 = getValueAt(row,-1);
       if (v0 == null) return null;
       if (v0 instanceof PerfedData) {
-	 PerfedData pd = (PerfedData) v0;
-	 return pd.getToolTip();
+         PerfedData pd = (PerfedData) v0;
+         return pd.getToolTip();
        }
       return "???";
-
+   
     }
 
 }	// end of inner class PerfTree
@@ -349,9 +395,11 @@ private static class CellDrawer implements TableCellRenderer {
     }
 
    @Override public Component getTableCellRendererComponent(JTable t,Object v,boolean sel,
-	 boolean foc,int r, int c) {
-      JComponent jc = (JComponent) default_renderer.getTableCellRendererComponent(t,v,sel,foc,r,c);
-      jc.setOpaque(false);
+         boolean foc,int r, int c) {
+      JComponent jc = (JComponent) default_renderer.getTableCellRendererComponent(t,
+            v,sel,foc,r,c);
+      if (!sel) jc.setOpaque(false);
+      else jc.setOpaque(true);
       return jc;
     }
 
@@ -369,20 +417,29 @@ private class TreeCellRenderer extends DefaultTreeCellRenderer {
     }
 
    @Override public Component getTreeCellRendererComponent(JTree t,Object v,
-	 boolean sel,boolean exp,boolean leaf,int row,boolean hasfocus) {
+         boolean sel,boolean exp,boolean leaf,int row,boolean hasfocus) {
       Color bkg = null;
       PerfedData pd = (PerfedData) v;
       if (pd.getNumCritical() > 0)
-	 bkg = new Color(255,128,128);
+         bkg = new Color(255,128,128);
       else if (pd.getTotalValues() == null || total_values == null)
-	 bkg = new Color(0,0,0,0);
+         bkg = new Color(255,255,255,0);
       else if (pd.getTotalValues().getNumForward() > total_values.getNumForward() / 100)
-	 bkg = new Color(255,255,128);
+         bkg = new Color(255,255,128);
       else
-	 bkg = new Color(0,0,0,0);
-      setBackground(bkg);
-
-      return super.getTreeCellRendererComponent(t,pd.getLocalName(),sel,exp,leaf,row,hasfocus);
+         bkg = new Color(0,0,0,0);
+   
+      Component comp =  super.getTreeCellRendererComponent(t,pd.getLocalName(),sel,exp,leaf,row,hasfocus);
+      comp.setBackground(bkg);
+      
+   // System.err.println("PERF TREE CELL RENDER " + row + " " + v + " " + exp + " 0x" +
+   //       Long.toString(getForeground().getRGB() & 0xffffffffL,16) + " 0x" + 
+   //       Long.toString(bkg.getRGB() & 0xffffffffL,16) + " " +
+   //       sel + " " + leaf + " " + hasfocus + " " +
+   //       t.getRowCount() + " " + t.getHeight() + " " + t.getBounds() + " " +
+   //       t.getSize());
+      
+      return comp;
     }
 
 }	// end of inner class TreeCellRenderer
@@ -489,6 +546,14 @@ private class PerformanceModel extends SwingTreeTable.AbstractTreeTableModel {
 
 }	// end of inner class PerformanceModel
 
+
+private class ModelUpdater implements Runnable {
+   
+   @Override public void run() {
+      performance_model.rootUpdated();
+    }
+   
+}       // end of inner class ModelUpdater
 
 
 }	// end of class PerfedEditor

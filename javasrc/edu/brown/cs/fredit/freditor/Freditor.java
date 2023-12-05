@@ -102,16 +102,21 @@ private void process()
 {
    fredit_controller.setup();
    
-   fredit_controller.addEditor(new SubtypedEditor(fredit_controller));
-   fredit_controller.addEditor(new SafetyedEditor(fredit_controller));
-   fredit_controller.addEditor(new ReflectEditor(fredit_controller));
-   fredit_controller.addEditor(new ProbedEditor(fredit_controller));
-   fredit_controller.addEditor(new PerfedEditor(fredit_controller)); 
+   fredit_controller.addEditor(new SubtypedEditor(fredit_controller),true);
+   fredit_controller.addEditor(new SafetyedEditor(fredit_controller),true);
+   fredit_controller.addEditor(new ReflectEditor(fredit_controller),true);
+   fredit_controller.addEditor(new ProbedEditor(fredit_controller),true);
+   fredit_controller.addEditor(new PerfedEditor(fredit_controller),false); 
    
    top_frame = new JFrame("FAIT Resource Editor");
    top_frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
    top_frame.add(fredit_controller.getPanel());
    top_frame.pack();
+   Dimension d = top_frame.getPreferredSize();
+   if (d.width < DEFAULT_WIDTH) {
+      d.width = DEFAULT_WIDTH;
+      top_frame.setSize(d);
+    }
    top_frame.setVisible(true);
 }
 
@@ -127,6 +132,7 @@ private void process()
 {
    JDialog dlg = new JDialog(top_frame,ttl,false);
    Dimension d = contents.getPreferredSize();
+   
    JScrollPane sp = new JScrollPane(contents);
    sp.setPreferredSize(d);
    dlg.setContentPane(new JScrollPane(contents));
