@@ -38,7 +38,7 @@ import edu.brown.cs.ivy.xml.IvyXml;
 import edu.brown.cs.ivy.xml.IvyXmlWriter;
 
 
-public class FreshMethodData implements FreshConstants, FreshConstants.FreshSkipItem
+public class FreshMethodData implements FreshConstants, FreshConstants.FreshSkipItem, Cloneable
 {
 
 
@@ -244,6 +244,51 @@ FreshMethodData(Element xml)
 }
 
 
+FreshMethodData(String name,MethodDataKind kind)
+{
+   // might need to handle methods different than class/packages
+   base_name = name;
+   base_kind = kind;
+   replace_name = null;
+   return_arg = -1;
+   result_type = null;
+   alt_result = null;
+   throw_types = null;
+   canbe_null = true;
+   type_annots = new ArrayList<>();
+   arg_annots = new HashMap<>();
+   is_mutable = true;
+   does_exit = false;
+   async_call = false;
+   is_constructor = false;
+   no_return = false;
+   no_virtual = false;
+   set_fields = false;
+   is_affected = false;
+   inline_type = InlineType.NORMAL;
+   is_clone = false;
+   dont_scan = true;
+   callback_names = null;
+   callback_args = null;
+   callback_id = null;
+   when_conditions = null;
+   load_types = null;
+}
+
+
+
+@Override public FreshMethodData clone()
+{
+   try {
+      FreshMethodData fmd = (FreshMethodData) super.clone();
+      return fmd;
+    }
+   catch (CloneNotSupportedException e) {
+      return null;
+    }
+}
+
+
 
 /********************************************************************************/
 /*                                                                              */
@@ -260,6 +305,12 @@ public boolean isSkipped()
   
    return false;
 }
+
+void setSkipped(boolean fg) 
+{
+   dont_scan = !fg;
+}
+
 
 /********************************************************************************/
 /*										*/

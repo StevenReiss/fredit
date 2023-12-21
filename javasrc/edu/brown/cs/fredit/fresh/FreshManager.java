@@ -46,6 +46,7 @@ public class FreshManager implements FreshConstants
 /********************************************************************************/
 
 private List<FreshResourceFile> resource_files;
+private FreshResourceFile editable_file;
 
 
 /********************************************************************************/
@@ -82,6 +83,7 @@ public void setupResourceFiles(Element xml)
    
    // Files are kept in order so most important is last
    resource_files.sort(new PriorityComparator());
+   editable_file = resource_files.get(resource_files.size()-1);
 }
 
 
@@ -127,6 +129,48 @@ public FreshSubtypeValue createSubtypeValue(String name)
 public FreshSafetyCondition createSafetyCondition(String name)
 {
    return new FreshSafetyConditionImpl(name);
+}
+
+
+
+/********************************************************************************/
+/*                                                                              */
+/*      Method item editing                                                     */
+/*                                                                              */
+/********************************************************************************/
+
+public void setSkipped(String name,MethodDataKind kind,boolean fg)
+{
+   FreshMethodData usedata = null;
+   FreshResourceFile usefile = null;
+   
+   for (FreshResourceFile frf : resource_files) {
+      for (FreshMethodData md : frf.getMethodData()) {
+         if (md.getName().equals(name)) {
+            usefile = frf;
+            usedata = md;
+          }
+         else if (md.getName().startsWith(name)) {
+//          outerdata = md;
+          }
+       }
+    }
+   
+   if (usedata != null && usefile == editable_file) {
+      if (usedata.isSkipped() != fg) {
+         usedata.setSkipped(fg);
+       }
+    }
+   else if (usedata != null) {
+      usedata = usedata.clone();
+      usedata.setSkipped(fg);
+      editable_file.addMethodData(usedata);
+    }
+   else {
+      usedata = new FreshMethodData(name,kind);
+      usedata.setSkipped(fg);
+      editable_file.addMethodData(usedata);
+    }
 }
 
 

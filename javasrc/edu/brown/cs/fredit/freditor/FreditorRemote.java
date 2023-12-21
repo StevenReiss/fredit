@@ -35,6 +35,8 @@
 
 package edu.brown.cs.fredit.freditor;
 
+import java.awt.event.MouseEvent;
+
 import javax.swing.JComponent;
 
 import org.w3c.dom.Element;
@@ -88,6 +90,10 @@ public JComponent getEditor()
    fredit_controller.addEditor(new PerfedEditor(fredit_controller),false); 
    
    return fredit_controller.getPanel();
+}
+
+public void handlePopupMenu(MouseEvent evt) {
+   fredit_controller.handlePopupMenu(evt);
 }
 
 

@@ -170,6 +170,11 @@ List<FreshSafetyConditionImpl> getSafetyConditions()
 }
 
 
+void addMethodData(FreshMethodData md)
+{
+   method_data.add(md);
+}
+
 
 /********************************************************************************/
 /*                                                                              */

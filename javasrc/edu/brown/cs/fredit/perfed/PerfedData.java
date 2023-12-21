@@ -29,10 +29,12 @@ import java.util.List;
 
 import org.w3c.dom.Element;
 
+import edu.brown.cs.fredit.fresh.FreshConstants;
+import edu.brown.cs.ivy.file.IvyFormat;
 import edu.brown.cs.ivy.file.IvyLog;
 import edu.brown.cs.ivy.xml.IvyXml;
 
-class PerfedData implements PerfedConstants
+class PerfedData implements PerfedConstants, FreshConstants
 {
 
 
@@ -44,6 +46,8 @@ class PerfedData implements PerfedConstants
 
 private String item_name;
 private String item_description;
+private String [] arg_types;
+private String return_type;
 private String from_file;
 private boolean in_project;
 private PerfedValues base_values;
@@ -53,6 +57,7 @@ private PerfedData parent_data;
 private List<PerfedData> child_data;
 private int num_critical;
 private boolean is_skipped;
+private MethodDataKind item_kind;
 
 
 
@@ -63,7 +68,7 @@ private boolean is_skipped;
 /*                                                                              */
 /********************************************************************************/
 
-PerfedData(String name) 
+PerfedData(String name,MethodDataKind kind) 
 {
    item_name = name;
    base_values = new PerfedValues(null);
@@ -73,13 +78,47 @@ PerfedData(String name)
    child_data = null;
    num_critical = 0;
    is_skipped = false;
+   arg_types = null;
+   return_type = null;
+   item_description = "";
+   arg_types = null;
+   return_type = null;
+   item_kind = kind;
 }
 
 
 PerfedData(Element xml) 
 {
    item_name = IvyXml.getAttrString(xml,"NAME");
-   item_description = IvyXml.getAttrString(xml,"DESCRIPTION");
+   if (item_name == null) item_name = "???";
+   else {
+      int idx = item_name.lastIndexOf(".");
+      if (idx > 0) {
+         String lnm = item_name.substring(idx+1);
+         if (lnm.equals("<init>")) lnm = "<<Constructor>>";
+         else if (lnm.equals("<clinit>")) lnm = "<<Static Initializer>>";
+         else if (lnm.equals("$$$$clinit$$$$")) lnm = "<<Static Initializer>>";
+         else lnm = null;
+         if (lnm != null) {
+            item_name = item_name.substring(0,idx+1) + lnm;
+          }
+       }
+    }
+   item_kind = MethodDataKind.FULL_METHOD;
+   arg_types = null;
+   return_type = null;
+   String description = IvyXml.getAttrString(xml,"DESCRIPTION");
+   item_description = description;
+   if (description != null && description.charAt(0) == '(') {
+      int idx = description.lastIndexOf(")");
+      String args = description.substring(1,idx);
+      String ret = description.substring(idx+1);
+      if (!args.isEmpty()) {
+         String argtypes = IvyFormat.formatTypeNames(args,"@");
+         arg_types = argtypes.split("@");
+         return_type = IvyFormat.formatTypeName(ret,false);
+       }
+    }
    from_file = IvyXml.getAttrString(xml,"FILE");
    in_project = IvyXml.getAttrBool(xml,"INPROJECT");
    base_values = new PerfedValues(IvyXml.getChild(xml,"BASE"));
@@ -100,13 +139,16 @@ PerfedData(Element xml)
 /********************************************************************************/
 
 String getName()				{ return item_name; }
-String getDescription()			{ return item_description; }
+String getDescription()                         { return item_description; }
+void setDescription(String d)                   { item_description = d; }
 PerfedValues getSumValues()			{ return sum_values; }
 PerfedValues getBaseValues()			{ return base_values; }
 PerfedValues getTotalValues()			{ return total_values; }
 int getNumCritical() 			        { return num_critical; }
 boolean isSkipped()                             { return is_skipped; }
 void setSkipped(boolean fg)                     { is_skipped = fg; }
+MethodDataKind getKind()                        { return item_kind; }
+PerfedData getParent()                          { return parent_data; }
 
 List<PerfedData> getChidren()			{ return child_data; }
 
@@ -179,11 +221,75 @@ void addCritical()
 
 String getToolTip()
 {
+   String cnm = null;
+   String mnm = null;
+   String pfx = "class";
+   int idx = item_name.lastIndexOf(".");
+   if (item_description != null && !item_description.isEmpty()) {
+      if (idx < 0) {
+         mnm = item_name;
+       }
+      else {
+         mnm = item_name.substring(idx+1);
+         cnm = item_name.substring(0,idx);
+         pfx = "class";
+       }
+    }
+   else {
+      cnm = item_name;
+      mnm = null;
+      if (idx < 0) pfx = "package";
+      else if (idx+1 < item_name.length()) {
+         char ch = item_name.charAt(idx+1);
+         if (Character.isLowerCase(ch)) pfx = "package";
+       }
+    }
+   if (mnm != null) {
+      mnm = mnm.replace("<","&lt;");
+      mnm = mnm.replace(">","&gt;");
+    }
+
    StringBuffer buf = new StringBuffer();
-   buf.append("<html><p><b>");
-   buf.append(item_name);
-   if (item_description != null) buf.append(item_description);
-   buf.append("<p><table>");
+   buf.append("<html><p>");
+   
+   buf.append("<table style='border:1px solid black;'><tr>");
+   buf.append("<td style='border:1px solid black; border-collapse:collapse;'>");
+   
+   buf.append("<b><table>");
+   if (cnm != null) {
+      buf.append("<tr><td>");
+      buf.append(pfx);
+      buf.append("</td><td>");
+      buf.append(cnm);
+      buf.append("</td></tr>");
+    }
+   if (mnm != null) {
+      buf.append("<tr><td>Name</td><td>");
+      buf.append(mnm);
+      buf.append("</td></tr>");
+    }
+   if (arg_types != null && arg_types.length > 0) {
+      buf.append("<tr><td rowspan='");
+      buf.append(arg_types.length);
+      buf.append("'>Arguments</td><td>");
+      buf.append(arg_types[0]);
+      buf.append("</td></tr>");
+      for (int i = 1; i < arg_types.length; ++i) {
+         buf.append("<tr><td>");
+         buf.append(arg_types[i]);
+         buf.append("</td></tr>");
+       }
+    }
+   if (return_type != null) {
+      buf.append("<tr><td>Returns</td><td>");
+      buf.append(return_type);
+      buf.append("</td></tr>");
+    }
+   buf.append("</table></b>");
+   
+   buf.append("</td><td>");
+   
+   buf.append("<table>");
    if (child_data == null) {
       buf.append("<tr><td>Base Forward Steps</td><td>");
       buf.append(base_values.getNumForward());
@@ -225,6 +331,9 @@ String getToolTip()
    buf.append(in_project);
    buf.append("</td></tr>");
    buf.append("</table>");
+   
+   buf.append("</td></tr></table>");
+   
    return buf.toString();
 }
 

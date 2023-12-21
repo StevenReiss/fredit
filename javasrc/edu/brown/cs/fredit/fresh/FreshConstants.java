@@ -41,6 +41,7 @@ enum ErrorLevel {
 
 
 enum MethodDataKind {
+   TOTALS,
    PACKAGE,
    CLASS,
    METHOD,

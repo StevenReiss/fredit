@@ -36,11 +36,14 @@
 package edu.brown.cs.fredit.controller;
 
 import java.awt.Component;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
@@ -99,6 +102,7 @@ private FreshManager file_manager;
 private WindowCreator window_creator;
 private String session_id;
 private String result_id;
+private Map<Component,ControllerEditor> active_editors;
 
 private static Random random_gen = new Random();
 private static int random_int = random_gen.nextInt(1000000);
@@ -130,6 +134,7 @@ public ControllerMain(String [] args,WindowCreator wc)
    window_creator = wc;
    session_id = SOURCE_ID;
    result_id = RESULT_ID;
+   active_editors = new HashMap<>();
    
    file_manager = new FreshManager();
 
@@ -140,6 +145,7 @@ public ControllerMain(String [] args,WindowCreator wc)
    scanArgs(args);
    
    using_bubbles = mint_id != null && workspace_id == null;
+   
 }
 
 
@@ -173,7 +179,9 @@ public String getSessionId()
 public void addEditor(ControllerEditor ed,boolean scroll)
 {
    if (control_panel == null) setup();
-   control_panel.addTab(ed.getName(),ed.getPanel(),scroll);
+   JComponent c = ed.getPanel();
+   control_panel.addTab(ed.getName(),c,scroll);
+   active_editors.put(c,ed);
 }
 
 
@@ -222,12 +230,26 @@ public void setup()
    getResourceFilesFromFait();
 
    control_panel = new ControllerPanel(this);
+   
+   if (!using_bubbles) {
+      Mouser mouser = new Mouser();
+      control_panel.getPanel().addMouseListener(mouser);
+    }
 }
 
 
 public void recordFaitAnalysis(Element xml)
 {
    receiveAnalysis(xml);
+}
+
+
+public void handlePopupMenu(MouseEvent evt)
+{
+   Component c = control_panel.getCurrentTab();
+   ControllerEditor ed = active_editors.get(c);
+   if (ed == null) return;
+   ed.handlePopupMenu(evt);
 }
 
 
@@ -918,6 +940,26 @@ private class FaitHandler implements MintHandler {
     }
 
 }	// end of inner class FaitHandler
+
+
+
+/********************************************************************************/
+/*                                                                              */
+/*      Event listeners                                                         */
+/*                                                                              */
+/********************************************************************************/
+
+private class Mouser extends MouseAdapter {
+   
+   
+   
+   @Override public void mousePressed(MouseEvent evt) {
+      if (evt.getButton() == MouseEvent.BUTTON3) {
+         handlePopupMenu(evt);
+       }
+    }
+   
+}       // end of inner class MouseAdapter
 
 
 

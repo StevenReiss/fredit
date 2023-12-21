@@ -40,7 +40,8 @@ package edu.brown.cs.fredit.perfed;
 public interface PerfedConstants
 {
 
-
+double DEFAULT_CUTOFF = 0.005;          // 0.5%
+double DEFAULT_HIGHLIGHT = 0.010;       // 1%
 
 
 }       // end of interface PerfedConstants

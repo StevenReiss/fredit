@@ -35,6 +35,8 @@
 
 package edu.brown.cs.fredit.controller;
 
+import java.awt.event.MouseEvent;
+
 import javax.swing.JComponent;
 
 public interface ControllerEditor extends ControllerConstants
@@ -42,6 +44,8 @@ public interface ControllerEditor extends ControllerConstants
 
 JComponent getPanel();
 String getName();
+
+default void handlePopupMenu(MouseEvent evt)            { }
 
 
 }       // end of interface ControllerEditor

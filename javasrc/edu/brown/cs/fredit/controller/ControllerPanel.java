@@ -36,6 +36,7 @@
 package edu.brown.cs.fredit.controller;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
@@ -103,6 +104,13 @@ void addTab(String name,JComponent tab,boolean scroll)
 
 
 
+Component getCurrentTab()
+{
+   return main_panel.getCurrentTab();
+}
+
+
+
 /********************************************************************************/
 /*                                                                              */
 /*      Main Panel subclass                                                     */
@@ -137,6 +145,10 @@ private class MainPanel extends SwingGridPanel implements ActionListener {
    
    void addTab(String name,JComponent tab) {
       tab_pane.addTab(name,tab);
+    }
+   
+   Component getCurrentTab() {
+      return tab_pane.getSelectedComponent();
     }
    
    @Override protected void paintComponent(Graphics g) {
