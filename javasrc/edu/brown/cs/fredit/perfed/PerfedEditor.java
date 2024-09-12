@@ -510,7 +510,7 @@ private class PerformanceRunner extends Thread {
       IvyLog.logD("FREDIT","Performance result: " + IvyXml.convertXmlToString(xml));
       performance_result = IvyXml.getChild(xml,"PERFORMANCE");
    
-      args = new CommandArgs("CUTOFF",CUTOFF_VALUE,"IGNORES","CheckNullness CheckInitialization ");
+      args = new CommandArgs("CUTOFF",CUTOFF_VALUE,"IGNORES","CheckNullness CheckInitialization");
       Element cxml = controller_main.sendFaitReply(controller_main.getSessionId(),
             "CRITICAL",args,null);
       IvyLog.logD("FREDIT","Critical result: " + IvyXml.convertXmlToString(cxml));

@@ -109,7 +109,11 @@ private static class PriorityComparator implements Comparator<FreshResourceFile>
 
 public FreshSubtype createSubtype(String name)
 {
-   return new FreshSubtypeImpl(name);
+   FreshSubtypeImpl ft = new FreshSubtypeImpl(name);
+   
+   editable_file.addSubtype(ft);
+   
+   return ft;
 }
 
 

@@ -35,6 +35,7 @@
 
 package edu.brown.cs.fredit.subtyped;
 
+import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -51,6 +52,7 @@ import javax.swing.event.UndoableEditListener;
 import edu.brown.cs.fredit.controller.ControllerMain;
 import edu.brown.cs.fredit.fresh.FreshConstants.FreshSubtype;
 import edu.brown.cs.fredit.fresh.FreshConstants.FreshSubtypeValue;
+import edu.brown.cs.ivy.file.IvyLog;
 import edu.brown.cs.ivy.swing.SwingGridPanel;
 import edu.brown.cs.ivy.swing.SwingListPanel;
 import edu.brown.cs.ivy.swing.SwingListSet;
@@ -210,8 +212,12 @@ private class ValueEditor extends SwingGridPanel
    
    @Override public void actionPerformed(ActionEvent evt) {
       String cmd = evt.getActionCommand();
+      Component c = ControllerMain.getDisplayParent(this);
+      IvyLog.logD("FREDIT","Display parent is " + c + " " + c.getClass());
+      System.err.println("FREDIT: Action " + cmd + " " + c.getClass() + " " + c);
+      
       if (cmd.equalsIgnoreCase("CANCEL")) {
-         ControllerMain.getDisplayParent(this).setVisible(false);
+         c.setVisible(false);
        }
       else if (cmd.equalsIgnoreCase("SAVE")) {
          for_value.setDefaults(default_field.isSelected(),
@@ -219,7 +225,7 @@ private class ValueEditor extends SwingGridPanel
                uninit_field.isSelected());
          for_value.setAttributes(attr_field.getText());
          for_value.setName(name_field.getText());
-         ControllerMain.getDisplayParent(this).setVisible(false);
+         c.setVisible(false);
        }
       else {
          has_changed = true;

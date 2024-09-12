@@ -176,6 +176,13 @@ void addMethodData(FreshMethodData md)
 }
 
 
+void addSubtype(FreshSubtypeImpl st) 
+{
+   file_subtypes.add(st);
+}
+
+
+
 /********************************************************************************/
 /*                                                                              */
 /*      Output methods                                                          */

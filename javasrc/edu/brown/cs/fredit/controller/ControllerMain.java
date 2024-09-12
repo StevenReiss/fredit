@@ -135,17 +135,17 @@ public ControllerMain(String [] args,WindowCreator wc)
    session_id = SOURCE_ID;
    result_id = RESULT_ID;
    active_editors = new HashMap<>();
-   
+
    file_manager = new FreshManager();
 
    File f = new File(System.getProperty("user.home"));
    File f1 = new File(f,".bubbles");;
    props_dir = f1.getAbsolutePath();
-   
+
    scanArgs(args);
-   
+
    using_bubbles = mint_id != null && workspace_id == null;
-   
+
 }
 
 
@@ -199,16 +199,20 @@ public void displayWindow(String ttl,JComponent contents)
 
 public static Component getDisplayParent(Component pane)
 {
+   Class<?> bba = null;
    Class<?> bbl = null;
    try {
       bbl = Class.forName("edu.brown.cs.bubbles.BudaBubble");
+      bba = Class.forName("edu.brown.cs.bubbles.BudaBubbleArea");
     }
    catch (ClassNotFoundException e) { }
-   
+
    for (Component c = pane; c != null; c = c.getParent()) {
+      IvyLog.logD("FREDIT","Check window type " + c.getClass());
       if (bbl != null && bbl.isAssignableFrom(c.getClass())) return c;
-      if (c instanceof JDialog) return c;
-      if (c instanceof JFrame) return c;
+      if (bba != null && bbl.isAssignableFrom(c.getClass())) break;
+      if (bbl == null && c instanceof JDialog) return c;
+      if (bbl == null && c instanceof JFrame) return c;
     }
    return pane;
 }
@@ -230,7 +234,7 @@ public void setup()
    getResourceFilesFromFait();
 
    control_panel = new ControllerPanel(this);
-   
+
    if (!using_bubbles) {
       Mouser mouser = new Mouser();
       control_panel.getPanel().addMouseListener(mouser);
@@ -341,14 +345,14 @@ private void setupBedrockAndFait()
 	 startFait();
        }
     }
-   
+
    CommandArgs cargs = null;
    Element xml= sendFaitReply(session_id,"BEGIN",cargs,null);
    if (xml == null) {
       System.err.println("FREDIT: Can't start fait analysis");
       System.exit(1);
     }
-   
+
    addUserFiles();
 }
 
@@ -372,22 +376,22 @@ private void startBedrock()
    for (String s : new String [] { "eclipse", "eclipse.exe", "Eclipse.app" }) {
       File ef1 = new File(ed,s);
       if (ef1.exists() && ef1.canExecute()) {
-         if (ef1.isDirectory()) {
-            File ef2 = new File(ef1,"Contents");
-            ef1 = null;
-            for (String s1 : new String [] { "MacOS", "Eclipse" }) {
-               File ef3 = new File(ef2,s1);
-               File ef4 = new File(ef3,"eclipse");
-               if (ef4.exists() && ef4.canExecute()) {
-                  ef1 = ef4;
-                  break;
-                }
-             }
-          }
-         if (ef1 != null) {
-            ebin = ef1;
-            break;
-          }
+	 if (ef1.isDirectory()) {
+	    File ef2 = new File(ef1,"Contents");
+	    ef1 = null;
+	    for (String s1 : new String [] { "MacOS", "Eclipse" }) {
+	       File ef3 = new File(ef2,s1);
+	       File ef4 = new File(ef3,"eclipse");
+	       if (ef4.exists() && ef4.canExecute()) {
+		  ef1 = ef4;
+		  break;
+		}
+	     }
+	  }
+	 if (ef1 != null) {
+	    ebin = ef1;
+	    break;
+	  }
        }
       ef1 = null;
     }
@@ -570,27 +574,27 @@ private void addUserFiles()
    Element xml = sendBubblesXmlReply("PROJECTS",null,null,null);
    for (Element pxml : IvyXml.children(xml,"PROJECT")) {
       if (IvyXml.getAttrBool(pxml,"ISJAVA")) {
-         String name = IvyXml.getAttrString(pxml,"NAME");
-         CommandArgs args = new CommandArgs("FILES",true);
-         Element fxml = sendBubblesXmlReply("OPENPROJECT",name,args,null);
-         fxml = IvyXml.getChild(fxml,"PROJECT");
-         fxml = IvyXml.getChild(fxml,"FILES");
-         for (Element file : IvyXml.children(fxml,"FILE")) {
-            if (IvyXml.getAttrBool(file,"SOURCE")) {
-               File f2 = new File(IvyXml.getText(file));
-               if (f2.exists() && f2.getName().endsWith(".java")) {
-                  f2 = IvyFile.getCanonical(f2);
-                  xw.begin("FILE");
-                  xw.field("NAME",f2.getPath());
-                  xw.end("FILE");
-                }
-             }
-          }
+	 String name = IvyXml.getAttrString(pxml,"NAME");
+	 CommandArgs args = new CommandArgs("FILES",true);
+	 Element fxml = sendBubblesXmlReply("OPENPROJECT",name,args,null);
+	 fxml = IvyXml.getChild(fxml,"PROJECT");
+	 fxml = IvyXml.getChild(fxml,"FILES");
+	 for (Element file : IvyXml.children(fxml,"FILE")) {
+	    if (IvyXml.getAttrBool(file,"SOURCE")) {
+	       File f2 = new File(IvyXml.getText(file));
+	       if (f2.exists() && f2.getName().endsWith(".java")) {
+		  f2 = IvyFile.getCanonical(f2);
+		  xw.begin("FILE");
+		  xw.field("NAME",f2.getPath());
+		  xw.end("FILE");
+		}
+	     }
+	  }
        }
     }
-   
+
    sendFaitReply(session_id,"ADDFILE",null,xw.toString());
-   
+
    xw.close();
 }
 
@@ -599,14 +603,14 @@ private void addUserFiles()
 
 /********************************************************************************/
 /*										*/
-/*	Resource file methods   						*/
+/*	Resource file methods							*/
 /*										*/
 /********************************************************************************/
 
 private void getResourceFilesFromFait()
 {
    waitForAnalysis();
-   
+
    Element xml = sendFaitReply(session_id,"RESOURCES",null,null);
    if (xml == null) {
       System.err.println("FREDIT: Can't get resource files");
@@ -630,13 +634,13 @@ public Collection<FreshSubtype> getSubtypes()
 
 public FreshSubtype createSubtype(String name)
 {
-   return file_manager.createSubtype(name); 
+   return file_manager.createSubtype(name);
 }
 
 
 public FreshSubtypeValue createSubtypeValue(String name)
 {
-   return file_manager.createSubtypeValue(name); 
+   return file_manager.createSubtypeValue(name);
 }
 
 
@@ -654,9 +658,9 @@ public FreshSafetyCondition createSafetyCondition(String name)
 
 
 /********************************************************************************/
-/*                                                                              */
-/*      Analysis methods                                                        */
-/*                                                                              */
+/*										*/
+/*	Analysis methods							*/
+/*										*/
 /********************************************************************************/
 
 private void startAnalysis()
@@ -919,23 +923,23 @@ private class FaitHandler implements MintHandler {
       String cmd = args.getArgument(0);
       Element xml = msg.getXml();
       IvyLog.logD("FREDIT","Received from FAIT: " + IvyXml.convertXmlToString(xml));
-   
+
       switch (cmd) {
-         case "ANALYSIS" :
-            if (!IvyXml.getAttrBool(xml,"STARTED")) {
-               String rid = IvyXml.getAttrString(xml,"ID");
-               if (rid.equals(RESULT_ID) && !IvyXml.getAttrBool(xml,"ABORTED")) {
-                  receiveAnalysis(xml);
-                }
-             }
-            msg.replyTo();
-            break;
-         case "PING" :
-            msg.replyTo("<PONG/>");
-            break;
-         default :
-            msg.replyTo();
-            break;
+	 case "ANALYSIS" :
+	    if (!IvyXml.getAttrBool(xml,"STARTED")) {
+	       String rid = IvyXml.getAttrString(xml,"ID");
+	       if (rid.equals(RESULT_ID) && !IvyXml.getAttrBool(xml,"ABORTED")) {
+		  receiveAnalysis(xml);
+		}
+	     }
+	    msg.replyTo();
+	    break;
+	 case "PING" :
+	    msg.replyTo("<PONG/>");
+	    break;
+	 default :
+	    msg.replyTo();
+	    break;
        }
     }
 
@@ -944,22 +948,22 @@ private class FaitHandler implements MintHandler {
 
 
 /********************************************************************************/
-/*                                                                              */
-/*      Event listeners                                                         */
-/*                                                                              */
+/*										*/
+/*	Event listeners 							*/
+/*										*/
 /********************************************************************************/
 
 private class Mouser extends MouseAdapter {
-   
-   
-   
+
+
+
    @Override public void mousePressed(MouseEvent evt) {
       if (evt.getButton() == MouseEvent.BUTTON3) {
-         handlePopupMenu(evt);
+	 handlePopupMenu(evt);
        }
     }
-   
-}       // end of inner class MouseAdapter
+
+}	// end of inner class MouseAdapter
 
 
 
