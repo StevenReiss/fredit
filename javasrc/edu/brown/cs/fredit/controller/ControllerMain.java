@@ -98,7 +98,6 @@ private int    num_threads;
 private Element last_analysis;
 private ControllerPanel control_panel;
 private FreshManager file_manager;
-// private List<ControllerResourceFile> resource_files;
 private WindowCreator window_creator;
 private String session_id;
 private String result_id;
@@ -582,7 +581,7 @@ private void addUserFiles()
 	 for (Element file : IvyXml.children(fxml,"FILE")) {
 	    if (IvyXml.getAttrBool(file,"SOURCE")) {
 	       File f2 = new File(IvyXml.getText(file));
-	       if (f2.exists() && f2.getName().endsWith(".java")) {
+	       if (useSourceFile(f2)) {
 		  f2 = IvyFile.getCanonical(f2);
 		  xw.begin("FILE");
 		  xw.field("NAME",f2.getPath());
@@ -596,6 +595,21 @@ private void addUserFiles()
    sendFaitReply(session_id,"ADDFILE",null,xw.toString());
 
    xw.close();
+}
+
+
+private boolean useSourceFile(File f)
+{
+   if (!f.exists()) return false;
+   if (!f.getName().endsWith(".java")) return false;
+   if (f.getPath().contains("/resources/")) return false;
+   if (f.getPath().contains("\\resources\\")) return false;
+   if (f.getPath().contains("/dropins/")) return false;
+   if (f.getPath().contains("\\dropins\\")) return false;
+   if (f.getPath().contains("/plugins/")) return false;
+   if (f.getPath().contains("\\plugins\\")) return false;
+   
+   return true;
 }
 
 
@@ -807,6 +821,9 @@ private Element sendBubblesXmlReply(String cmd,String proj,Map<String,Object> fl
    MintDefaultReply mdr = new MintDefaultReply();
    sendBubblesMessage(cmd,proj,flds,cnts,mdr);
    Element pxml = mdr.waitForXml();
+   
+   IvyLog.logD("FREDIT","Reply from Bubbles: " + IvyXml.convertXmlToString(pxml));
+   
    return pxml;
 }
 
@@ -843,6 +860,8 @@ private void sendBubblesMessage(String cmd,String proj,Map<String,Object> flds,S
 
    String xml = xw.toString();
    xw.close();
+   
+   IvyLog.logD("FREDIT","Send to Bubbles: " + xml);
 
    int fgs = MINT_MSG_NO_REPLY;
    if (rply != null) fgs = MINT_MSG_FIRST_NON_NULL;
@@ -923,23 +942,23 @@ private class FaitHandler implements MintHandler {
       String cmd = args.getArgument(0);
       Element xml = msg.getXml();
       IvyLog.logD("FREDIT","Received from FAIT: " + IvyXml.convertXmlToString(xml));
-
+   
       switch (cmd) {
-	 case "ANALYSIS" :
-	    if (!IvyXml.getAttrBool(xml,"STARTED")) {
-	       String rid = IvyXml.getAttrString(xml,"ID");
-	       if (rid.equals(RESULT_ID) && !IvyXml.getAttrBool(xml,"ABORTED")) {
-		  receiveAnalysis(xml);
-		}
-	     }
-	    msg.replyTo();
-	    break;
-	 case "PING" :
-	    msg.replyTo("<PONG/>");
-	    break;
-	 default :
-	    msg.replyTo();
-	    break;
+         case "ANALYSIS" :
+            if (!IvyXml.getAttrBool(xml,"STARTED")) {
+               String rid = IvyXml.getAttrString(xml,"ID");
+               if (rid.equals(RESULT_ID) && !IvyXml.getAttrBool(xml,"ABORTED")) {
+        	  receiveAnalysis(xml);
+        	}
+             }
+            msg.replyTo();
+            break;
+         case "PING" :
+            msg.replyTo("<PONG/>");
+            break;
+         default :
+            msg.replyTo();
+            break;
        }
     }
 
