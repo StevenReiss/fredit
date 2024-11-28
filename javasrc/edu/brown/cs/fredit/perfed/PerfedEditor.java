@@ -165,7 +165,7 @@ public PerfedEditor(ControllerMain cm)
    minrange.setActionCommand("MIN");
    minrange.addActionListener(acts);
    
-   int highval = (int)(DEFAULT_HIGHLIGHT * 100);
+   int highval = (int) (DEFAULT_HIGHLIGHT * 100);
    SwingRangeSlider highrange = new SwingRangeSlider(0,10,0,highval);
    highrange.setFont(ft);
    highrange.setActionCommand("HIGH");
@@ -204,7 +204,7 @@ public PerfedEditor(ControllerMain cm)
 
 
 
-private class PanelHandler implements ActionListener {
+private final class PanelHandler implements ActionListener {
    
    @Override public void actionPerformed(ActionEvent evt) {
       switch (evt.getActionCommand()) {
@@ -376,7 +376,7 @@ private void sortChildren(PerfedData pd)
 
 
 
-private class PerfComparator implements Comparator<PerfedData> {
+private final class PerfComparator implements Comparator<PerfedData> {
 
    @Override public int compare(PerfedData pd1,PerfedData pd2) {
       int d = pd1.getSumValues().getNumForward() - pd2.getSumValues().getNumForward();
@@ -611,7 +611,7 @@ private class PerfTreeTable extends SwingTreeTable {
 /*                                                                              */
 /********************************************************************************/
 
-private class Mouser extends MouseAdapter {
+private final class Mouser extends MouseAdapter {
    
    @Override public void mousePressed(MouseEvent evt) {
       if (evt.getButton() == MouseEvent.BUTTON3) {
@@ -781,7 +781,7 @@ private class PerformanceModel extends SwingTreeTable.AbstractTreeTableModel {
 }	// end of inner class PerformanceModel
 
 
-private class ModelUpdater implements Runnable {
+private final class ModelUpdater implements Runnable {
    
    @Override public void run() {
       performance_model.rootUpdated();

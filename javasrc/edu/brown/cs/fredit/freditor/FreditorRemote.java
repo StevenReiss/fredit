@@ -85,7 +85,8 @@ public JComponent getEditor()
 {
    fredit_controller.setup();
    
-   fredit_controller.addEditor(new SubtypedEditor(fredit_controller),true);   fredit_controller.addEditor(new SafetyedEditor(fredit_controller),true);
+   fredit_controller.addEditor(new SubtypedEditor(fredit_controller),true);  
+   fredit_controller.addEditor(new SafetyedEditor(fredit_controller),true);
    fredit_controller.addEditor(new ReflectEditor(fredit_controller),true);
    fredit_controller.addEditor(new PerfedEditor(fredit_controller),false); 
    

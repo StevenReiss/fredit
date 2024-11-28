@@ -87,7 +87,7 @@ public void setupResourceFiles(Element xml)
 }
 
 
-private static class PriorityComparator implements Comparator<FreshResourceFile> {
+private static final class PriorityComparator implements Comparator<FreshResourceFile> {
    
    @Override public int compare(FreshResourceFile f1,FreshResourceFile f2) {
       int v = f2.getPriority() - f1.getPriority();

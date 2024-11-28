@@ -84,7 +84,9 @@ private Set<String>     load_types;
 /*                                                                              */
 /********************************************************************************/
 
+// CHECKSTYLE:OFF
 FreshMethodData(Element xml)
+// CHECKSTYLE:ON
 {
    base_name = IvyXml.getAttrString(xml,"NAME");
    boolean formthd = false;
@@ -160,7 +162,9 @@ FreshMethodData(Element xml)
 	 try {
 	    ano = Integer.parseInt(id);
 	  }
-	 catch (NumberFormatException e) { continue; }
+	 catch (NumberFormatException e) {
+	    continue;
+	 }
 	 StringTokenizer tok1 = new StringTokenizer(aan,",@");
 	 while (tok1.hasMoreTokens()) {
 	    aaset.add(tok1.nextToken());

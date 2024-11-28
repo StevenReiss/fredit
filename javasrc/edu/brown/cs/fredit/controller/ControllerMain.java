@@ -444,7 +444,10 @@ private void startBedrock()
 	  }
 	 if (i == 0) new IvyExec(cmd);
 	 else {
-	    try { Thread.sleep(100); } catch (InterruptedException e) { }
+	    try {
+	       Thread.sleep(100);
+	    }
+catch (InterruptedException e) { }
 	  }
        }
     }
@@ -472,7 +475,7 @@ private void startFait()
    args.add(IvyExecQuery.getJavaPath());
 
    if (dbgargs != null && dbgargs.contains("###")) {
-      int port = (int)(Math.random() * 1000 + 3000);
+      int port = (int) (Math.random() * 1000 + 3000);
       dbgargs = dbgargs.replace("###",Integer.toString(port));
     }
    if (dbgargs != null) {
@@ -915,7 +918,7 @@ private void sendFait(String sid,String cmd,CommandArgs args,String xml,MintRepl
 /*										*/
 /********************************************************************************/
 
-private class ControllerEclipseHandler implements MintHandler {
+private final class ControllerEclipseHandler implements MintHandler {
 
    @Override public void receive(MintMessage msg,MintArguments args) {
       String cmd = args.getArgument(0);
@@ -936,7 +939,7 @@ private class ControllerEclipseHandler implements MintHandler {
 
 
 
-private class FaitHandler implements MintHandler {
+private final class FaitHandler implements MintHandler {
 
    @Override public void receive(MintMessage msg,MintArguments args) {
       String cmd = args.getArgument(0);
@@ -972,7 +975,7 @@ private class FaitHandler implements MintHandler {
 /*										*/
 /********************************************************************************/
 
-private class Mouser extends MouseAdapter {
+private final class Mouser extends MouseAdapter {
 
 
 

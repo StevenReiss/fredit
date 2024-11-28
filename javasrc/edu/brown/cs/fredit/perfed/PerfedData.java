@@ -186,7 +186,8 @@ String getLocalName()
 
 void addChild(PerfedData pd,PerfedValues delta) 
 {
-   IvyLog.logD("PERFED","PreAdd child " + pd + " " + delta + " " + pd.getSumValues() + " TO " + this + " -> " + sum_values);
+   IvyLog.logD("PERFED","PreAdd child " + pd + " " + delta + " " + 
+         pd.getSumValues() + " TO " + this + " -> " + sum_values);
    
    if (child_data == null) child_data = new ArrayList<>();
    
@@ -196,7 +197,8 @@ void addChild(PerfedData pd,PerfedValues delta)
     }
    if (delta != null) sum_values.add(delta);
    
-   IvyLog.logD("PERFED","Add child " + pd + " " + delta + " " + pd.getSumValues() + " TO " + this + " -> " + sum_values);
+   IvyLog.logD("PERFED","Add child " + pd + " " + delta + " " +
+         pd.getSumValues() + " TO " + this + " -> " + sum_values);
 }
 
 

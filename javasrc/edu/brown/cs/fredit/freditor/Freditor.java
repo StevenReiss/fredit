@@ -50,7 +50,7 @@ import edu.brown.cs.fredit.reflect.ReflectEditor;
 import edu.brown.cs.fredit.safetyed.SafetyedEditor;
 import edu.brown.cs.fredit.subtyped.SubtypedEditor;
 
-public class Freditor implements FreditorConstants, ControllerConstants.WindowCreator
+public final class Freditor implements FreditorConstants, ControllerConstants.WindowCreator
 {
 
 
